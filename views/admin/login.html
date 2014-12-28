@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='utf-8'>
+<title>32like.face - 登录</title>
+<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<link rel='stylesheet' href='/lib/bootstrap/css/bootstrap.min.css'>
+<style>
+html{width:100%;height:100%;}
+body{position:relative;padding-bottom:150px;min-height:100%;width:100%;}
+#footer{height:150px;overflow:hidden;position:absolute;bottom:0;left:0;width:100%;color: #aba9a7;font-size: 15px;box-shadow: inset 0 11px 8px -11px rgba(0,0,0,.12);background: #f1efeb;padding: 20px 0;}
+#footer .container{display:-webkit-box}
+#footer .span8{-webkit-box-flex:1;text-align:left;padding-top:40px;}
+@media (max-width:480px){
+  #footer{padding:20px 0;height:auto}
+  #footer .qr{display:none;}
+  #footer .span8{padding-top:0;}
+}
+@media (min-width:481px){
+  #main .container{width:400px;padding:20px}
+}
+</style>
+</head>
+<body>
+  
+<header class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
+  <div class="container">
+    <div class="navbar-header">
+      <a href="/admin" class="navbar-brand"><span class="glyphicon glyphicon-tint"></span>32like.face</a>
+    </div>
+    <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+    </nav>
+  </div>
+</header>
+
+<div id="main">
+  <section class="container">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">登录{% if loginError %}<span style="font-size:0.8em;margin-left:10px;color:#999">请输入正确的用户名和密码</span>{% endif %}</h3>
+      </div>
+      <div class="panel-body {% if loginError %}has-error{% endif %}">
+        <form role="form" action="/admin/login" method="post">
+          <div class="form-group">
+              <label class="control-label" for="inputUsername">用户名</label>
+              <input class="form-control input-lg" id="inputUsername" name="username" type="text" />
+          </div>
+          <div class="form-group">
+              <label class="control-label" for="inputPassword">密码</label>
+              <input class="form-control input-lg" id="inputPassword" name="password" type="password" />
+          </div>
+          <div class="checkbox">
+            <label class="control-label">
+              <input name="remember" type="checkbox"> 记住我
+            </label>
+          </div>
+          <button style="width:100%" type="submit" class="btn btn-info btn-lg">登录</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>
+  
+<div id="footer">
+  <div class="container">
+    <p class="span8">
+       杭州花开一刻网络有限公司<br>
+       Copyright © 2014. All rights reserved<br>
+    </p>
+    <div class="qr" style="width:140px">
+      <img src="/img/qrcode.jpg" width="120"/>
+    </div>
+  </div>
+</div>
+  
+</body>
+</html>

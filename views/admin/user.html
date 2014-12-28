@@ -1,0 +1,72 @@
+{% set nav = "user" %}
+{% set title = "用户列表" %}
+{% extends "admin/base.html" %}
+{% block body %}
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">用户列表</h3>
+  </div>
+  <div class="panel-body table-responsive table-hover">
+    <table class="table table-bordered table-hover">
+      <thead>
+          <tr>
+            <th>id</th>
+            <th>openid</th>
+            <th>faceid</th>
+            <th>facesetid</th>
+            <th>time</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% for item in list %}
+          <tr data-id="{{item.id}}">
+            <th><a href="/user/{{item.id}}" target="_blank">{{item.id}}</a></th>
+            <th>{{item.openid}}</th>
+            <th>{{item.faceid}}</th>
+            <th>{{item.facesetid}}</th>
+            <th>{{item.time|time}}</th>
+          </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+    
+    
+    {% if size > 1 %}
+    <ul class="pagination">
+      {% if page == 1 %}
+      <li class="disabled"><a href="#">&laquo;</a></li>
+      {% else %}
+      <li><a href="/admin/shop?page={{ page - 1 }}">&laquo;</a></li>
+      {% endif %}
+
+      {% for i in range(1, size+1) -%}
+        {% if i == page %}
+        <li class="active"><a href="#">{{i}}</a></li>
+        {% else %}
+        <li><a href="/admin/shop?page={{i}}">{{i}}</a></li>
+        {% endif %}
+      {%- endfor %}
+      
+      {% if page == size %}
+      <li class="disabled"><a href="#">&raquo;</a></li>
+      {% else %}
+      <li><a href="/admin/shop?page={{ page + 1 }}">&raquo;</a></li>
+      {% endif %}
+      
+    </ul>
+    {% endif %}
+    
+  </div>
+ 
+    
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+$(function(){
+});
+</script>
+{% endblock %}

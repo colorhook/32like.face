@@ -1,0 +1,77 @@
+{% set nav = "log" %}
+{% set title = "系统日志" %}
+{% extends "admin/base.html" %}
+{% block body %}
+<style>
+.btn-group .glyphicon{margin:0 4px}
+</style>
+{% if type == 'info' %}
+{% set style = 'info' %}
+{% elif type == 'warn' %}
+{% set style = 'warning' %}
+{% elif type == 'log' %}
+{% set style = 'default' %}
+{% elif type == 'debug' %}
+{% set style = 'success' %}
+{% else %}
+{% set style = 'danger' %}
+{% endif %}
+<div class="panel panel-default panel-{{style}}">
+  <div class="panel-heading clearfix">
+    <h3 class="panel-title pull-left">日志列表</h3>
+    <div class="btn-group btn-group-sm pull-right">
+      <a href="{% if type == 'log' %}javascript:void{% else %}/admin/log?type=log{% endif %}" type="button" class="btn btn-default">{% if type == 'log' %}<span class="glyphicon glyphicon-eye-open"></span>{% endif %}Log</a>
+      <a href="{% if type == 'info' %}javascript:void{% else %}/admin/log?type=info{% endif %}"" type="button" class="btn btn-info">{% if type == 'info' %}<span class="glyphicon glyphicon-eye-open"></span>{% endif %}Info</a>
+      <a href="{% if type == 'debug' %}javascript:void{% else %}/admin/log?type=debug{% endif %}"" type="button" class="btn btn-success">{% if type == 'debug' %}<span class="glyphicon glyphicon-eye-open"></span>{% endif %}Debug</a>
+      <a href="{% if type == 'warn' %}javascript:void{% else %}/admin/log?type=warn{% endif %}"" type="button" class="btn btn-default btn-warning">{% if type == 'warn' %}<span class="glyphicon glyphicon-eye-open"></span>{% endif %}Warn</a>
+      <a href="{% if type == 'error' %}javascript:void{% else %}/admin/log?type=error{% endif %}"" type="button" class="btn btn-default btn-danger">{% if type == 'error' %}<span class="glyphicon glyphicon-eye-open"></span>{% endif %}Error</a>
+    </div>
+ 
+  </div>
+  <div class="panel-body table-responsive table-hover">
+    <table class="table table-bordered table-hover">
+      <thead>
+          <tr>
+            <th>文件</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% for item in list %}
+          <tr>
+            <th><a href="/admin/log/file/{{item}}" target="_blank">{{item}}</a></th>
+          </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+    
+    
+    {% if size > 1 %}
+    <ul class="pagination">
+      {% if page == 1 %}
+      <li class="disabled"><a href="#">&laquo;</a></li>
+      {% else %}
+      <li><a href="/admin/log?page={{ page - 1 }}">&laquo;</a></li>
+      {% endif %}
+
+      {% for i in range(1, size+1) -%}
+        {% if i == page %}
+        <li class="active"><a href="#">{{i}}</a></li>
+        {% else %}
+        <li><a href="/admin/log?page={{i}}">{{i}}</a></li>
+        {% endif %}
+      {%- endfor %}
+      
+      {% if page == size %}
+      <li class="disabled"><a href="#">&raquo;</a></li>
+      {% else %}
+      <li><a href="/admin/log?page={{ page + 1 }}">&raquo;</a></li>
+      {% endif %}
+      
+    </ul>
+    {% endif %}
+    
+  </div>
+ 
+    
+</div>
+{% endblock %}
