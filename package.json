@@ -18,7 +18,6 @@
     "connect-busboy": "0.0.1",
     "express-session": "1.7.4",
     "connect-flash": "0.1.1",
-    "mongoose": "3.9.0",
     "wechat": "0.8.9",
     "fileutil": "1.1.1",
     "mini-logger": "0.3.0",
