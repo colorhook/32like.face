@@ -11,4 +11,5 @@ nohup.out
 upload/
 config/database.config.json
 config/faceapi.config.json
+config/facesetid.txt
 templates/

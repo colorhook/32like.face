@@ -1,13 +1,14 @@
 {% set nav = "faceset" %}
-{% set title = "faceset列表" %}
+{% set title = "face列表" %}
 {% extends "admin/base.html" %}
 {% block body %}
 
 
 <!-- remove Modal -->
 <div class="modal fade" id="removeModal" tabindex="-1" role="dialog" aria-hidden="true">
-  <form method="post" action="/admin/face/delete">
+  <form method="post" action="/admin/faceset/face/delete">
     <input class="id" name="id" type="hidden"/>
+    <input class="facesetid" name="facesetid" type="hidden" value="{{facesetid}}"/>
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -45,9 +46,9 @@
       <tbody>
           {% for item in list %}
           <tr data-id="{{item.face_id}}">
-            <th><a href="/admin/face/{{item.face_id}}" target="_blank">{{item.face_id}}</a></th>
+            <th><a href="/admin/face/item/{{item.face_id}}" target="_blank">{{item.face_id}}</a></th>
             <th>
-              <!--<a class="delete" data-id="{{item.id}}" href="#">删除</a>-->
+              <a class="delete" data-id="{{item.id}}" href="#">删除</a>
             </th>
           </tr>
           {% endfor %}

@@ -27,6 +27,7 @@ exports.index = function(req, res){
         return res.redirect('admin/error');
       }
       var list = [];
+      
       rows.forEach(function(item){
         var face = JSON.parse(item.data);
         var attr = face.attribute;
@@ -38,6 +39,7 @@ exports.index = function(req, res){
           smiling: attr.smiling.value,
           glass: attr.glass.value,
           race: attr.race.value,
+          time: item.time,
           gender: attr.gender.value == 'Male' ? '男' : '女'
         });
       });
@@ -61,6 +63,7 @@ exports.index = function(req, res){
 **/
 exports.add = function(req, res){
   res.render('admin/star-add.html', {
+    info: req.flash('info')
   });
 }
 
@@ -88,6 +91,41 @@ exports.delete = function(req, res){
   });
 }
 
+
+exports.addStar = function(img, callback){
+   faceapi.detect(img, function(e, result){
+     if(e){
+      return callback(e);
+     }
+     if(!result || !result.face || !result.face.length){
+      return callback('noface');
+     }
+     var face = result.face[0];
+     var facesetid = database.Faceset.getCurrentId();
+     faceapi.addFaceToFaceset(face.face_id, facesetid, function(e){
+       if(e){
+         if(e.statusCode == 400){
+           faceapi.createFaceset('star'+Date.now(), function(e, json){
+             if(e){
+              return callback(e);
+             }
+             var newfacesetid = json.faceset_id;
+             faceapi.addFaceToFaceset(face.face_id, newfacesetid, function(e){
+               if(e){
+                return callback(e);
+               }
+               callback(null, {face: face, faceid:face.face_id, facesetid: newfacesetid});
+             })
+           })
+         }else{
+           callback(e);
+         }
+       }else{
+        callback(null, {face: face, faceid:face.face_id, facesetid: facesetid});
+       }
+     });
+   });
+}
 /**
 @method action
 @param {HttpRequest} req
@@ -95,47 +133,141 @@ exports.delete = function(req, res){
 **/
 exports.action = function(req, res){
   var img = req.param('img');
+  var name = req.param('name');
   var info;
   
-  if(!img){
+  if(!name){
+    info = 'name不能为空';
+  }else if(!img){
     info = 'img不能为空';
   }
   if(info){
     req.flash('info', info);
     return res.redirect('/admin/star/add');
   }
-  faceapi.detect(img, function(e, result){
+  exports.addStar(img, function(e, data){
     if(e){
+      logger.error(e);
       req.flash('info', e.message);
       return res.redirect('/admin/star/add');
     }
-    if(!result || !result.face || !result.face.length){
-      req.flash('info', '没有找到人脸');
-      return res.redirect('/admin/star/add');
-    }
-    var face = result.face[0];
+    var face = data.face;
+    console.log(data);
     database.Face.add({
-      faceid: face.face_id,
+      faceid: data.faceid,
+      img: img,
+      time: Date.now(),
       data: JSON.stringify(face)
-    }, function(err, data){
+    }, function(err){
       if(err){
+        logger.error(err);
         req.flash('info', err.message);
         return res.redirect('/admin/star/add');
       }
       database.Star.add({
-        faceid: face.face_id,
-        facesetid: facesetid
+        name: name,
+        faceid: data.faceid,
+        facesetid: data.facesetid
       }, function(err){
         if(err){
-          console.log(err);
+          logger.error(err);
           req.flash('info', err.toString());
           return res.redirect('/admin/star/add');
         }
         return res.redirect('/admin/star');
       });
     });
-    
   });
 }
 
+/**
+@method batch
+@param {HttpRequest} req
+@param {HttpResponse} res
+**/
+exports.batch = function(req, res){
+  var data = req.param('data');
+  var info;
+  
+  if(!data){
+    info = 'data不能为空';
+  }
+  if(info){
+    req.flash('info', info);
+    console.log(info);
+    return res.redirect('/admin/star/add');
+  }
+  var arr = data.split("\n") || [];
+  var index = 0, length = arr.length, succeed = 0;
+  function nextKeyValue(){
+    if(index >= length){
+      return null;
+    }
+    var kv = arr[index];
+    index++;
+    if(!kv){
+      return nextKeyValue();
+    }
+    kv = kv.trim();
+    var match = kv.match(/(.+)\s+(.+)/);
+    if(!match || match.length < 3){
+      return nextKeyValue();
+    }
+    var name = match[1], img = match[2];
+    if(!key || !value){
+      return nextKeyValue();
+    }
+    return {name: name, img: img}
+  }
+  
+  function task(){
+    var kv = nextKeyValue();
+    if(!kv){
+      return completed();
+    }
+    exports.addStar(kv.img, function(e, data){
+      if(e){
+        logger.error(e);
+        return task();
+      }
+      var face = data.face;
+      
+      //add face
+      database.Face.add({
+        faceid: data.faceid,
+        img: kv.img,
+        time: Date.now(),
+        data: JSON.stringify(face)
+      }, function(err, data){
+        if(err){
+          logger.error(err);
+          return task();
+        }
+        database.Star.add({
+          name: kv.name,
+          faceid: data.faceid,
+          facesetid: data.facesetid
+        }, function(err){
+          if(err){
+            logger.error(err);
+            return task();
+          }
+           succeed++;
+          return task();
+        });
+        
+      });
+      //end add face
+    });
+  }
+  
+  function completed(){
+    req.flash('info', '成功导入' + succeed + '条数据');
+    return res.redirect('/admin/star/add');
+  }
+  
+  //start task
+  task();
+
+}
 

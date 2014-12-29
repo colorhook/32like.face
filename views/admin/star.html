@@ -2,10 +2,6 @@
 {% set title = "star列表" %}
 {% extends "admin/base.html" %}
 {% block body %}
-<style>
-table .img{max-width:60px;max-height:60px}
-.table>tbody>tr>td{line-height:60px}
-</style>
 <!-- remove Modal -->
 <div class="modal fade" id="removeModal" tabindex="-1" role="dialog" aria-hidden="true">
   <form method="post" action="/admin/star/delete">
@@ -45,6 +41,7 @@ table .img{max-width:60px;max-height:60px}
             <th>种族</th>
             <th>微笑(0-100)</th>
             <th>颜值</th>
+            <th>时间</th>
             <th>管理</th>
           </tr>
       </thead>
@@ -58,6 +55,7 @@ table .img{max-width:60px;max-height:60px}
             <td>{{item.race}}</td>
             <td>{{item.smiling}}</td>
             <td>{{item.value}}</td>
+            <td>{{item.time|time}}</td>
             <td>
               <a class="delete" data-id="{{item.id}}" href="#">删除</a>
             </td>

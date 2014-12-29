@@ -2,6 +2,7 @@
 @author hk1k
 **/
 var mysql = require('mysql2');
+var fileutil = require('fileutil');
 var logger = require('../lib/logger');
 
 var databaseConfig = require('../config/database.config.json');
@@ -41,6 +42,20 @@ exports.Admin = {
 Face
 **/
 exports.Face = {
+  list: function(page, size, callback){
+    if(page == undefined || page < 1){
+      page = 1;
+    }
+    if(size == undefined || size <= 0){
+      size = 20;
+    }
+    connection.query('SELECT * FROM `face` LIMIT ?,?', [(page - 1) * size, size], function(err, rows){
+      if(err){
+        return callback(err);
+      }
+      return callback(null, rows);
+    });
+  },
   find: function(faceid, callback){
     connection.query('SELECT * FROM `face` WHERE faceid = ?', faceid, function(err, rows){
       if(err){
@@ -53,6 +68,14 @@ exports.Face = {
   add: function(face, callback){
     connection.query('INSERT INTO `face` SET ?', face, callback);
   },
+  getCount: function(callback){
+    connection.query('SELECT count(*) AS total FROM `face`', function(err, rows) {
+      if(err || !rows || !rows.length){
+        return callback(err || {});
+      }
+      callback(null, rows[0].total);
+    });
+  },
   delete: function(id, callback){
     connection.query('DELETE FROM `face` WHERE id = ?', id, callback);
   },
@@ -61,11 +84,30 @@ exports.Face = {
   }
 }
 
+var facesetFile = __dirname + '/../config/facesetid.txt';
+var currentId;
+exports.Faceset = {
+  getCurrentId: function(){
+    if(!currentId){
+      currentId = fileutil.read(facesetFile);
+    }
+    return currentId;
+  },
+  setCurrentId: function(id){
+    currentId = id;
+    fileutil.write(facesetFile, currentId);
+  }
+}
+
+if(!fileutil.exist(facesetFile)){
+  fileutil.touch(facesetFile);
+  exports.Faceset.setCurrentId('c8bc94894ab3eca18fcc1e84bf387ccb');
+}
 /**
 User
 **/
 exports.User = {
-  find: function(page, size, callback){
+  list: function(page, size, callback){
     if(page == undefined || page < 1){
       page = 1;
     }
@@ -170,7 +212,7 @@ exports.Star = {
     if(size == undefined || size <= 0){
       size = 20;
     }
-    connection.query('SELECT s.id,s.faceid,s.facesetid,f.img,f.data FROM `star` AS s, `face` AS f LIMIT ?,?', [(page - 1) * size, size], function(err, rows){
+    connection.query('SELECT s.id,s.faceid,s.facesetid,f.img,f.data,f.time FROM `star` AS s, `face` AS f WHERE s.faceid=f.faceid LIMIT ?,?', [(page - 1) * size, size], function(err, rows){
       if(err){
         return callback(err);
       }
@@ -203,3 +245,4 @@ exports.Star = {
     });
   }
 }
+

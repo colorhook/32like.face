@@ -34,26 +34,13 @@ exports.faceset = function(req, res){
     if(err){
       return res.redirect('admin/error');
     }
-    res.render('admin/facelist.html', {
+    res.render('admin/faceset-face.html', {
+      facesetid: id,
       list: faces
     });
   });
 }
 
-/**
-faceset face
-@method index
-@param {HttpRequest} req
-@param {HttpResponse} res
-**/
-exports.face = function(req, res){
-  var id = req.params.id || req.param('id');
-  database.Face.find(id, function(err, data){
-    res.render('admin/face.html', {
-      data: data
-    });
-  });
-}
 
 /**
 add faceset
@@ -104,5 +91,35 @@ exports.delete = function(req, res){
       req.flash('info', err.toString());
     }
     return res.redirect('/admin/faceset');
+  });
+}
+
+/**
+delete faceset
+@method delete
+@param {HttpRequest} req
+@param {HttpResponse} res
+**/
+exports.deleteFace = function(req, res){
+  var id = req.param('id');
+  var facesetid = req.param('facesetid');
+  var info;
+  
+  if(!id){
+    info = 'id不能为空';
+  }else if(!facesetid){
+    info = 'facesetid不能为空';
+  }
+  if(info){
+    req.flash('info', info);
+    return res.redirect('/admin/faceset');
+  }
+  
+  faceapi.removeFaceFromFaceset(id, facesetid, function(err){
+    if(err){
+      logger.error(err);
+      req.flash('info', err.toString());
+    }
+    return res.redirect('/admin/faceset/item/' + facesetid);
   });
 }

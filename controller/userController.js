@@ -26,10 +26,13 @@ exports.index = function(req, res){
     if(err){
       return res.redirect('admin/error');
     }
-    database.User.find(page, pageCount, function(err, rows){
+    database.User.list(page, pageCount, function(err, rows){
       if(err){
         return res.redirect('admin/error');
       }
+      rows.forEach(function(item){
+        item.time = Number(item.time);
+      });
       res.render('admin/user.html', {
         page: page,
         size: Math.round(count/pageCount),
@@ -37,5 +40,4 @@ exports.index = function(req, res){
       });
     });
   });
-  
 }

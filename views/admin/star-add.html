@@ -21,8 +21,8 @@
   direction: ltr;
   cursor: pointer;
 }
-.btn-save{margin-left:1em}
-.fileinput-input{width:60%}
+.fileinput-input{width:80%}
+.btn-save{margin-top:1em;}
 @media (max-width:600px){
   .fileinput-input{width:60%}
 }
@@ -45,28 +45,58 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
-        <a {% if mode == "edit" %}data-toggle="collapse" data-parent="#accordion" href="#collapseBasic"{% endif %}>
-          新增star
-        </a>
+        <a>新增star</a>
       </h4>
     </div>
     <div id="collapseBasic" class="panel-collapse collapse in">
       <div class="panel-body">
-        <form class="form-horizontal" role="form" action="/admin/star/action" method="post">
-          <label for="J_m_img"  class="col-sm-2 control-label">图片：</label>
-          <div class="col-sm-10 clearfix">
-            <input id="J_m_img" class="form-control fileinput-input pull-left" type="text" name="img" value="" placeholder="输入URL或上传"/>
-            <button type="submit" class="btn btn-primary pull-left btn-save">保存</button>
-            <span class="btn pull-right btn-success fileinput-button" data-input="#J_m_img">
-              <i class="glyphicon glyphicon-plus"></i>
-              <span>添加图片</span>
-              <input type="file" name="files[]" multiple="">
-            </span>
+        <form role="form" action="/admin/star/action" method="post">
+          <div class="form-group">
+            <label for="J_m_name"  class="control-label">姓名：</label>
+            <input id="J_m_name" class="form-control" type="text" name="name" value="" placeholder="输入姓名"/>
           </div>
           <div class="form-group">
-            <div class="col-sm-offset-0 col-sm-10" style="text-align:right">
-              
+            <label for="J_m_img"  class="control-label">图片：</label>
+            <div class="clearfix">
+              <input id="J_m_img" class="form-control fileinput-input pull-left" type="text" name="img" value="" placeholder="输入URL或上传"/>
+              <span class="btn btn-success fileinput-button pull-right" data-input="#J_m_img">
+                <i class="glyphicon glyphicon-plus"></i>
+                <span>添加图片</span>
+                <input type="file" name="files[]" multiple="">
+              </span>
             </div>
+            
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn form-control btn-primary btn-save">保存</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <!--batcn-->
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a>批量新增star</a>
+      </h4>
+    </div>
+    <div id="collapseBasic" class="panel-collapse collapse in">
+      <div class="panel-body">
+        <h4>采用如下格式的数据进行批量导入：</h4>
+        <div class="alert alert-info" role="alert">
+          <p>姓名 图片链接地址</p>
+          <p>姓名 图片链接地址</p>
+          <p>姓名 图片链接地址</p>
+          <p>姓名 图片链接地址</p>
+        </div>
+        <form role="form" action="/admin/star/batch" method="post">
+          <div class="form-group">
+            <textarea class="form-control" name="data" rows="9"></textarea>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn form-control btn-primary btn-save">导入</button>
           </div>
         </form>
       </div>

@@ -56,7 +56,7 @@ exports.image = function(message, callback){
           openid: message.FromUserName
         }, function(err){
           database.User.setOpenId(message.FromUserName, face.face_id, function(err){
-            info += '\n性别: ' + attr.gender.value;
+            info += '性别: ' + attr.gender.value;
             info += '\n年龄: ' + attr.age.value + '<'+attr.age.range+'>';
             info += '\n眼镜: ' + attr.glass.value;
             info += '\n种族: ' + attr.race.value;
