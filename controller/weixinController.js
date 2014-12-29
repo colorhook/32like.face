@@ -66,7 +66,7 @@ exports.image = function(message, callback){
         });
         
       }else{
-        info += '\n没有找到人脸';
+        info += '没有找到人脸';
         callback(null, info);
       }
       
