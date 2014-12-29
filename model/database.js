@@ -205,14 +205,14 @@ exports.User = {
 Star
 **/
 exports.Star = {
-  find: function(page, size, callback){
+  list: function(page, size, callback){
     if(page == undefined || page < 1){
       page = 1;
     }
     if(size == undefined || size <= 0){
       size = 20;
     }
-    connection.query('SELECT s.id,s.faceid,s.facesetid,f.img,f.data,f.time FROM `star` AS s, `face` AS f WHERE s.faceid=f.faceid LIMIT ?,?', [(page - 1) * size, size], function(err, rows){
+    connection.query('SELECT s.id,s.name,s.faceid,s.facesetid,f.img,f.data,f.time FROM `star` AS s, `face` AS f WHERE s.faceid=f.faceid LIMIT ?,?', [(page - 1) * size, size], function(err, rows){
       if(err){
         return callback(err);
       }
@@ -235,6 +235,17 @@ exports.Star = {
   },
   findById: function(id, callback){
     connection.query("SELECT * FROM `star` WHERE id = ?", [id], function(err, rows) {
+      if(err){
+        return callback(err);
+      }
+      if(!rows || !rows.length){
+        return callback(null, null);
+      }
+      callback(null, rows[0]);
+    });
+  },
+  findByFaceId: function(id, callback){
+    connection.query("SELECT * FROM `star` WHERE faceid = ?", [id], function(err, rows) {
       if(err){
         return callback(err);
       }

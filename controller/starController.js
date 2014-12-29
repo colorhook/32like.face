@@ -22,7 +22,7 @@ exports.index = function(req, res){
     if(err){
       return res.redirect('admin/error');
     }
-    database.Star.find(page, pageCount, function(err, rows){
+    database.Star.list(page, pageCount, function(err, rows){
       if(err){
         return res.redirect('admin/error');
       }
@@ -33,6 +33,7 @@ exports.index = function(req, res){
         var attr = face.attribute;
         list.push({
           id: item.id,
+          name: item.name,
           img: item.img,
           faceid: item.faceid,
           age: attr.age.value,
@@ -156,7 +157,6 @@ exports.action = function(req, res){
     database.Face.add({
       faceid: data.faceid,
       img: img,
-      time: Date.now(),
       data: JSON.stringify(face)
     }, function(err){
       if(err){
@@ -214,7 +214,7 @@ exports.batch = function(req, res){
       return nextKeyValue();
     }
     var name = match[1], img = match[2];
-    if(!key || !value){
+    if(!name || !img){
       return nextKeyValue();
     }
     return {name: name, img: img}
@@ -222,6 +222,7 @@ exports.batch = function(req, res){
   
   function task(){
     var kv = nextKeyValue();
+    console.log(kv);
     if(!kv){
       return completed();
     }
@@ -236,9 +237,8 @@ exports.batch = function(req, res){
       database.Face.add({
         faceid: data.faceid,
         img: kv.img,
-        time: Date.now(),
         data: JSON.stringify(face)
-      }, function(err, data){
+      }, function(err){
         if(err){
           logger.error(err);
           return task();

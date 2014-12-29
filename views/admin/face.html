@@ -42,7 +42,8 @@
             <th>图片</th>
             <th>openid</th>
             <th>faceid</th>
-            <th>time</th>
+            <th>时间</th>
+            <th>管理</th>
           </tr>
       </thead>
       <tbody>
@@ -53,6 +54,9 @@
             <td>{{item.openid}}</td>
             <td><a href="/admin/face/item/{{item.faceid}}">{{item.faceid}}</a></td>
             <td>{{item.time|time}}</td>
+            <td>
+              <a class="delete" data-id="{{item.id}}" href="#">删除</a>
+            </td>
           </tr>
           {% endfor %}
       </tbody>

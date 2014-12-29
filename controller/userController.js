@@ -30,13 +30,29 @@ exports.index = function(req, res){
       if(err){
         return res.redirect('admin/error');
       }
+      var list = [];
+      
       rows.forEach(function(item){
-        item.time = Number(item.time);
+        var face = JSON.parse(item.data);
+        var attr = face.attribute;
+        list.push({
+          id: item.id,
+          img: item.img,
+          faceid: item.faceid,
+          age: attr.age.value,
+          smiling: attr.smiling.value,
+          glass: attr.glass.value,
+          race: attr.race.value,
+          time: item.time,
+          gender: attr.gender.value == 'Male' ? '男' : '女'
+        });
       });
+      
+
       res.render('admin/user.html', {
         page: page,
         size: Math.round(count/pageCount),
-        list: rows
+        list: list
       });
     });
   });

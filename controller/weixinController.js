@@ -51,7 +51,6 @@ exports.image = function(message, callback){
         database.Face.add({
           faceid: face.face_id,
           img: message.PicUrl,
-          time: Date.now(),
           data: JSON.stringify(face),
           openid: message.FromUserName
         }, function(err){

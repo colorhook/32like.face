@@ -35,6 +35,7 @@
       <thead>
           <tr>
             <th>id</th>
+            <th>姓名</th>
             <th>图片</th>
             <th>性别</th>
             <th>年龄</th>
@@ -49,6 +50,7 @@
           {% for item in list %}
           <tr data-id="{{item.id}}">
             <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
     <td><a href="/admin/face/item/{{item.faceid}}" target="_blank"><img class="img" src="{{item.img}}"/></a></td>
             <td>{{item.gender}}</td>
             <td>{{item.age}}</td>

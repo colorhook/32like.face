@@ -30,8 +30,8 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">
-      face列表
-      <a style="color:#fff" href="javascript:void" id="J_face_add" class="btn btn-primary btn-xs pull-right">增加</a>
+      <span class="badge">{{total}}</span> faceset: {{facesetid}}
+      <!--<a style="color:#fff" href="javascript:void" id="J_face_add" class="btn btn-primary btn-xs pull-right">增加</a>-->
     </h3>
     
   </div>
@@ -39,23 +39,54 @@
     <table class="table table-bordered table-hover">
       <thead>
           <tr>
-            <th>faceid</th>
+            <th>图片</th>
+            <th>在face库中</th>
+            <th>在star库中</th>
             <th>管理</th>
           </tr>
       </thead>
       <tbody>
           {% for item in list %}
           <tr data-id="{{item.face_id}}">
-            <th><a href="/admin/face/item/{{item.face_id}}" target="_blank">{{item.face_id}}</a></th>
-            <th>
+            {% if item.face %}
+            <td><a href="/admin/face/item/{{item.face_id}}" target="_blank"><img src="{{item.face.img}}"/></a></td>
+            {% else %}
+            <td><a href="/admin/face/item/{{item.face_id}}" target="_blank">{{item.face_id}}</a></td>
+            {% endif %}
+            <td>{{item.in_face}}</td>
+            <td>{{item.in_star}}</td>
+            <td>
               <a class="delete" data-id="{{item.id}}" href="#">删除</a>
-            </th>
+            </td>
           </tr>
           {% endfor %}
       </tbody>
     </table>
     
-    
+    {% if size > 1 %}
+    <ul class="pagination">
+      {% if page == 1 %}
+      <li class="disabled"><a href="#">&laquo;</a></li>
+      {% else %}
+      <li><a href="/admin/faceset/item/{{facesetid}}?page={{ page - 1 }}">&laquo;</a></li>
+      {% endif %}
+
+      {% for i in range(1, size+1) -%}
+        {% if i == page %}
+        <li class="active"><a href="#">{{i}}</a></li>
+        {% else %}
+        <li><a href="/admin/faceset/item/{{facesetid}}?page={{i}}">{{i}}</a></li>
+        {% endif %}
+      {%- endfor %}
+      
+      {% if page == size %}
+      <li class="disabled"><a href="#">&raquo;</a></li>
+      {% else %}
+      <li><a href="/admin/faceset/item/{{facesetid}}?page={{ page + 1 }}">&raquo;</a></li>
+      {% endif %}
+      
+    </ul>
+    {% endif %}
     
   </div>
  

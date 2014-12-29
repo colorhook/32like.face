@@ -55,7 +55,7 @@
   <div class="panel-heading">
     <h3 class="panel-title">
       faceset列表
-      <a style="color:#fff" href="javascript:void" id="J_faceset_add" class="btn btn-primary btn-xs pull-right">增加</a>
+      <!--<a style="color:#fff" href="javascript:void" id="J_faceset_add" class="btn btn-primary btn-xs pull-right">增加</a>-->
     </h3>
     
   </div>
@@ -71,11 +71,11 @@
       <tbody>
           {% for item in list %}
           <tr data-id="{{item.faceset_id}}">
-            <th><a href="/admin/faceset/item/{{item.faceset_id}}">{{item.faceset_id}}</a></th>
-            <th>{{item.faceset_name}}</th>
-            <th>
+            <td><a href="/admin/faceset/item/{{item.faceset_id}}">{{item.faceset_id}}</a></td>
+            <td>{{item.faceset_name}}</th>
+            <td>
               <!--<a class="delete" data-id="{{item.id}}" href="#">删除</a>-->
-            </th>
+            </td>
           </tr>
           {% endfor %}
       </tbody>

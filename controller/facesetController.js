@@ -30,14 +30,47 @@ faceset detail
 **/
 exports.faceset = function(req, res){
   var id = req.params.id || req.param('id');
+
+  if(!id){
+    return res.redirect('admin/faceset');
+  }
+  
+  var page = req.params.page || req.param('page');
+  page = Number(page);
+  if(isNaN(page) || page < 1){
+    page = 1;
+  }
+  var pageCount = 20;
+  
   faceapi.getFacesFromFaceset(id, function(err, faces){
     if(err){
       return res.redirect('admin/error');
     }
-    res.render('admin/faceset-face.html', {
-      facesetid: id,
-      list: faces
+    var total = faces.length;
+    
+    faces = faces.splice((page - 1) * pageCount, pageCount);
+    
+    var size = faces.length, completed = 0;
+    faces.forEach(function(item, index){
+      database.Star.findByFaceId(item.face_id, function(err, data){
+        faces[index].in_star = !!data;
+        database.Face.find(item.face_id, function(err, data){
+          faces[index].face = data;
+          faces[index].in_face = !!data;
+          completed++;
+          if(completed >= size){
+            res.render('admin/faceset-face.html', {
+              facesetid: id,
+              total: total,
+              page: page,
+              size: Math.round(total/pageCount),
+              list: faces
+            });
+          }
+        });
+      });
     });
+    
   });
 }
 

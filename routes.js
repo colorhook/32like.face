@@ -72,6 +72,7 @@ module.exports = function(app){
   
   app.get('/admin/face', faceController.index);
   app.get('/admin/face/item/:id', faceController.face);
+  app.post('/admin/face/delete', faceController.delete);
   
   app.get('/admin/faceset', facesetController.index);
   app.get('/admin/faceset/item/:id', facesetController.faceset);
