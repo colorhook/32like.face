@@ -24,11 +24,11 @@ exports.index = function(req, res){
   var pageCount = 20;
   database.User.getCount(function(err, count){
     if(err){
-      return res.render('admin/error');
+      return res.redirect('admin/error');
     }
     database.User.find(page, pageCount, function(err, rows){
       if(err){
-        return res.render('admin/error');
+        return res.redirect('admin/error');
       }
       res.render('admin/user.html', {
         page: page,

@@ -39,7 +39,6 @@ exports.upload = function(req, res){
       json.code = 200;
       json.message = 'success'
       json.img = '/upload/' + newName;
-      res.saveOperation('上除了文件'+json.img);
       logger.info('file uploaded: '+json.img);
       res.end(JSON.stringify(json));
     });

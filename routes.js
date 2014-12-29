@@ -4,10 +4,10 @@ var express = require('express');
 var config = require('./config');
 
 var comboController = require('./controller/comboController');
-//var frontendController = require('./controller/frontendController');
 var loginController = require('./controller/loginController');
 var adminController = require('./controller/adminController');
 var userController = require('./controller/userController');
+var starController = require('./controller/starController');
 var facesetController = require('./controller/facesetController');
 var uploadController = require('./controller/uploadController');
 var logController = require('./controller/logController');
@@ -63,9 +63,19 @@ module.exports = function(app){
   
   app.get('/admin/user', userController.index);
 
- 
-  //app.get('/admin/faceset', facesetController.index);
-
+  app.get('/admin/star', starController.index);
+  app.get('/admin/star/add', starController.add);
+  app.post('/admin/star/action', starController.action);
+  app.post('/admin/star/delete', starController.delete);
+  
+  
+  
+  app.get('/admin/faceset', facesetController.index);
+  app.get('/admin/faceset/item/:id', facesetController.faceset);
+  app.get('/admin/face/item/:id', facesetController.face);
+  app.post('/admin/faceset/add', facesetController.add);
+  app.post('/admin/faceset/delete', facesetController.delete);
+  
   
   app.get('/admin/admin', adminController.index);
   

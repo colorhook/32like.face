@@ -23,6 +23,7 @@ exports.combo = function(req, res){
     dir = "";
     files = [url];
   }
+
   var topDirMap = {
     "css": __dirname + "/../public/css",
     "js": __dirname + "/../public/js",
@@ -32,6 +33,7 @@ exports.combo = function(req, res){
   var filterFiles = [];
   files.forEach(function(item){
     item = path.normalize(dir + "/" + item);
+    item = item.replace(/\\/g, '/');
     var splits = item.match(/\/?([^\/]*)\/(.*)/);
     if(!splits){
       return;

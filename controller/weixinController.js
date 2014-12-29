@@ -11,7 +11,6 @@ var faceapi = require('../lib/faceapi');
 @param {Function} callback 订阅恢复信息的回调
 **/
 exports.subscribe = function(weixinID, callback){
-  logger.info('收到订阅请求, weixin OpenID:' + weixinID);
   callback(null, '请发送自己的一张照片来打分');
 }
 
@@ -41,12 +40,10 @@ exports.image = function(message, callback){
 
   faceapi.detect(message.PicUrl, function(e, result){
     if(e){
-      console.error(e);
+      logger.error(e);
       callback(null, e.toString());
     }else{
-      console.log(JSON.stringify(result));
       var info = '';
-      info += 'openid: ' + message.FromUserName;
       if(result.face && result.face.length){
         var face = result.face[0];
         var attr = face.attribute;
