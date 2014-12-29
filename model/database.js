@@ -107,7 +107,7 @@ exports.User = {
       if(result){
         connection.query("UPDATE `user` SET faceid= ? WHERE opeid = ?", [faceid, openid], callback)
       }else{
-        this.add({openid: openid, faceid: faceid}, callback);
+        self.add({openid: openid, faceid: faceid}, callback);
       }
     });
   },
