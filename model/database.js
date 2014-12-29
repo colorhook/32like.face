@@ -105,7 +105,7 @@ exports.User = {
     var self = this;
     this.findByOpenId(openid, function(err, result){
       if(result){
-        connection.query("UPDATE `user` SET faceid= ? WHERE opeid = ?", [faceid, openid], callback)
+        connection.query("UPDATE `user` SET faceid= ? WHERE openid = ?", [faceid, openid], callback)
       }else{
         self.add({openid: openid, faceid: faceid}, callback);
       }
