@@ -48,15 +48,28 @@ exports.image = function(message, callback){
         var face = result.face[0];
         var attr = face.attribute;
         
-        info += '\n性别: ' + attr.gender.value;
-        info += '\n年龄: ' + attr.age.value + '<'+attr.age.range+'>';
-        info += '\n眼镜: ' + attr.glass.value;
-        info += '\n种族: ' + attr.race.value;
-        info += '\n微笑: ' + attr.smiling.value;
+        database.Face.add({
+          faceid: face.face_id,
+          img: message.PicUrl,
+          time: Date.now(),
+          data: JSON.stringify(face),
+          openid: message.FromUserName
+        }, function(err){
+          database.User.setOpenId(message.FromUserName, face.face_id, function(err){
+            info += '\n性别: ' + attr.gender.value;
+            info += '\n年龄: ' + attr.age.value + '<'+attr.age.range+'>';
+            info += '\n眼镜: ' + attr.glass.value;
+            info += '\n种族: ' + attr.race.value;
+            info += '\n微笑: ' + attr.smiling.value;
+            callback(null, info);
+          });
+        });
+        
       }else{
         info += '\n没有找到人脸';
+        callback(null, info);
       }
-      callback(null, info);
+      
     }
   });
 }
