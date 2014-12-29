@@ -49,7 +49,7 @@ exports.Face = {
     if(size == undefined || size <= 0){
       size = 20;
     }
-    connection.query('SELECT * FROM `face` LIMIT ?,?', [(page - 1) * size, size], function(err, rows){
+    connection.query('SELECT * FROM `face` ORDER BY time DESC LIMIT ?,?', [(page - 1) * size, size], function(err, rows){
       if(err){
         return callback(err);
       }
