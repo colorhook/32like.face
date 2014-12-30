@@ -54,6 +54,7 @@ exports.image = function(message, callback){
       var time = ' ' + (Date.now() - start) + 'ms';
       var attributes;
       if(type == 0){
+        console.log(face);
         attributes = face.attribute;
         info += '性别: ' + attributes.gender.value;
         info += '\n年龄: ' + attributes.age.value;
