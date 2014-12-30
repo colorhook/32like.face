@@ -56,6 +56,7 @@ exports.image = function(message, callback){
     if(e){
       logger.error(e);
       database.NoDetect.add({img:img, openid: message.FromUserName}, function(){});
+      imageEventEmitter.emit(message.MsgId);
     }else{
       var type = 0;
       if(face.type == 'betaface'){
