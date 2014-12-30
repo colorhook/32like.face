@@ -178,7 +178,7 @@ exports.User = {
     var adapterData = {};
     var attributes;
 
-    if(!type || type == 1){
+    if(!type || type == 0){
       attributes = data.attribute;
       adapterData.gender = attributes.gender.value;
       adapterData.age = attributes.age.value;
