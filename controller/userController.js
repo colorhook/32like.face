@@ -25,13 +25,11 @@ exports.index = function(req, res){
   database.User.getCount(function(err, count){
     if(err){
       logger.error(err);
-      console.log(err);
       return res.redirect('admin/error');
     }
     database.User.list(page, pageCount, function(err, rows){
       if(err){
         logger.error(err);
-        console.log(err);
         return res.redirect('admin/error');
       }
       var list = [];
@@ -40,7 +38,6 @@ exports.index = function(req, res){
         var face = JSON.parse(item.data);
     
         var adapterData = database.User.adapter(face, item.type);
-        console.log(item.msgid);
         adapterData.id = item.id;
         adapterData.msgid = item.msgid;
         adapterData.openid = item.openid;
