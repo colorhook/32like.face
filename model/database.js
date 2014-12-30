@@ -38,6 +38,54 @@ exports.Admin = {
   }
 }
 
+exports.NoDetect = {
+  list: function(page, size, callback){
+    if(page == undefined || page < 1){
+      page = 1;
+    }
+    if(size == undefined || size <= 0){
+      size = 20;
+    }
+    connection.query('SELECT * FROM `nodetect` ORDER BY time DESC LIMIT ?,?', [(page - 1) * size, size], function(err, rows){
+      if(err){
+        return callback(err);
+      }
+      return callback(null, rows);
+    });
+  },
+  find: function(id, callback){
+    connection.query('SELECT * FROM `nodetect` WHERE id = ?', faceid, function(err, rows){
+      if(err){
+        callback(err);
+      }else{
+        callback(null, rows[0])
+      }
+    });
+  },
+  findByOpenId: function(openid, callback){
+    connection.query('SELECT * FROM `nodetect` WHERE openid = ?', openid, function(err, rows){
+      if(err){
+        callback(err);
+      }else{
+        callback(null, rows)
+      }
+    });
+  },
+  add: function(face, callback){
+    connection.query('INSERT INTO `nodetect` SET ?', face, callback);
+  },
+  getCount: function(callback){
+    connection.query('SELECT count(*) AS total FROM `nodetect`', function(err, rows) {
+      if(err || !rows || !rows.length){
+        return callback(err || {});
+      }
+      callback(null, rows[0].total);
+    });
+  },
+  delete: function(id, callback){
+    connection.query('DELETE FROM `nodetect` WHERE id = ?', id, callback);
+  }
+}
 /**
 Face
 **/
@@ -114,7 +162,7 @@ exports.User = {
     if(size == undefined || size <= 0){
       size = 20;
     }
-    connection.query('SELECT u.id,u.openid,u.faceid,f.img,f.time,f.data FROM `user` AS u, `face` AS f WHERE u.faceid=f.faceid LIMIT ?,?', [(page - 1) * size, size], function(err, rows){
+    connection.query('SELECT u.id,u.openid,u.faceid,f.img,f.time,f.data,f.betaface FROM `user` AS u, `face` AS f WHERE u.faceid=f.faceid LIMIT ?,?', [(page - 1) * size, size], function(err, rows){
       if(err){
         return callback(err);
       }

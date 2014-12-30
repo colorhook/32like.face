@@ -1,21 +1,21 @@
-{% set nav = "face" %}
-{% set title = "face列表" %}
+{% set nav = "nodetect" %}
+{% set title = "未识别列表" %}
 {% extends "admin/base.html" %}
 {% block body %}
 
 
 <!-- remove Modal -->
 <div class="modal fade" id="removeModal" tabindex="-1" role="dialog" aria-hidden="true">
-  <form method="post" action="/admin/face/delete">
+  <form method="post" action="/admin/nodetect/delete">
     <input class="id" name="id" type="hidden"/>
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-          <h4 class="modal-title">删除face</h4>
+          <h4 class="modal-title">删除未识别记录</h4>
         </div>
         <div class="modal-body">
-          <p class="warn">高危操作！该操作将永久删除该条face数据，确认要继续执行？</p>
+          <p class="warn">高危操作！该操作将永久删除该条未识别记录，确认要继续执行？</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default btn-cancel" data-dismiss="modal">取消</button>
@@ -29,7 +29,7 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">
-      所有上传过的face列表
+      所有上传过且未识别的列表
       <!--<a style="color:#fff" href="javascript:void" id="J_face_add" class="btn btn-primary btn-xs pull-right">增加</a>-->
     </h3>
     
@@ -41,8 +41,6 @@
             <th>id</th>
             <th>图片</th>
             <th>openid</th>
-            <th>faceid</th>
-            <th>是否由betaface识别</th>
             <th>时间</th>
             <th>管理</th>
           </tr>
@@ -53,8 +51,6 @@
             <td>{{item.id}}</td>
             <td><img src="{{item.img}}" alt="{{item.img}}"/></td>
             <td>{{item.openid}}</td>
-            <td><a href="/admin/face/item/{{item.faceid}}">{{item.faceid}}</a></td>
-            <td>{% if item.betaface == 1 %}是{% else %}否{% endif %}</a></td>
             <td>{{item.time|time}}</td>
             <td>
               <a class="delete" data-id="{{item.id}}" href="#">删除</a>
@@ -69,21 +65,21 @@
       {% if page == 1 %}
       <li class="disabled"><a href="#">&laquo;</a></li>
       {% else %}
-      <li><a href="/admin/user?page={{ page - 1 }}">&laquo;</a></li>
+      <li><a href="/admin/nodetect?page={{ page - 1 }}">&laquo;</a></li>
       {% endif %}
 
       {% for i in range(1, size+1) -%}
         {% if i == page %}
         <li class="active"><a href="#">{{i}}</a></li>
         {% else %}
-        <li><a href="/admin/user?page={{i}}">{{i}}</a></li>
+        <li><a href="/admin/nodetect?page={{i}}">{{i}}</a></li>
         {% endif %}
       {%- endfor %}
       
       {% if page == size %}
       <li class="disabled"><a href="#">&raquo;</a></li>
       {% else %}
-      <li><a href="/admin/user?page={{ page + 1 }}">&raquo;</a></li>
+      <li><a href="/admin/nodetect?page={{ page + 1 }}">&raquo;</a></li>
       {% endif %}
       
     </ul>

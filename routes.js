@@ -10,6 +10,7 @@ var userController = require('./controller/userController');
 var starController = require('./controller/starController');
 var faceController = require('./controller/faceController');
 var facesetController = require('./controller/facesetController');
+var nodetectController = require('./controller/nodetectController');
 var uploadController = require('./controller/uploadController');
 var logController = require('./controller/logController');
 
@@ -79,9 +80,10 @@ module.exports = function(app){
   
   app.post('/admin/faceset/add', facesetController.add);
   app.post('/admin/faceset/delete', facesetController.delete);
-  
   app.post('/admin/faceset/face/delete', facesetController.deleteFace);
   
+  app.get('/admin/nodetect', nodetectController.index);
+  app.post('/admin/nodetect/delete', nodetectController.delete);
   
   app.get('/admin/admin', adminController.index);
   

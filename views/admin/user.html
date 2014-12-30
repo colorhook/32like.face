@@ -18,6 +18,7 @@
             <th>种族</th>
             <th>微笑(0-100)</th>
             <th>颜值</th>
+            <th>由betaface识别</th>
             <th>时间</th>
           </tr>
       </thead>
@@ -31,6 +32,7 @@
             <td>{{item.race}}</td>
             <td>{{item.smiling}}</td>
             <td>{{item.value}}</td>
+            <td>{% if item.betaface == 1 %}是{% else %}否{% endif %}</a></td>
             <td>{{item.time|time}}</td>
           </tr>
           {% endfor %}

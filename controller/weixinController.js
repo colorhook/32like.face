@@ -65,8 +65,37 @@ exports.image = function(message, callback){
         });
         
       }else{
-        info += '没有找到人脸';
-        callback(null, info);
+       logger.warn('没有通过faceplus找到人脸:'+message.PicUrl);
+       faceapi.detectByBetaFace(message.PicUrl, function(e, json){
+         if(e){
+           logger.warn('没有通过beta找到人脸:'+message.PicUrl);
+           database.NoDetect.add({img:message.PicUrl, openid: message.FromUserName}, function(){
+             info = '没有找到人脸';
+             callback(null, info);
+           });
+         }else{
+           
+           database.Face.add({
+            faceid: face.face_id,
+            img: message.PicUrl,
+            data: JSON.stringify(face),
+            openid: message.FromUserName,
+            betaface: 1,
+          }, function(err){
+            database.User.setOpenId(message.FromUserName, face.face_id, function(err){
+               info += '性别: ' + json.gender.value;
+               info += '\n年龄: ' + json.age.value;
+               info += '\n眼镜: ' + json.glasses.value;
+               info += '\n种族: ' + json.race.value;
+               info += '\n微笑: ' + json.smile.value;
+               callback(null, info);
+            });
+          });
+           
+           
+         }
+       });
+        
       }
       
     }
