@@ -81,7 +81,7 @@ exports.image = function(message, callback){
             openid: message.FromUserName,
             betaface: 1,
           }, function(err){
-            database.User.setOpenId(message.FromUserName, face.face_id, function(err){
+            database.User.setOpenId(message.FromUserName, json.face_id, function(err){
                info += '性别: ' + json.gender.value;
                info += '\n年龄: ' + json.age.value;
                info += '\n眼镜: ' + json.glasses.value;
