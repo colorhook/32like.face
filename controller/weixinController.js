@@ -48,7 +48,7 @@ exports.image = function(message, callback){
       title: '这是一个看脸的世界',
       description: '系统正在紧张地扫描你的脸孔，点开查看详情',
       picurl: img,
-      url: 'http://face.zmzp.cn/show.html?img='+encodeURIComponent(img)
+      url: 'http://face.zmzp.cn/show/' + message.MsgId
     }
   ]);
   faceapi.detect(img, function(e, face){
