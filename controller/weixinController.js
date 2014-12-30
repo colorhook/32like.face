@@ -52,7 +52,17 @@ exports.image = function(message, callback){
     }
   ]);
   faceapi.detect(img, function(e, face){
-    imageEventEmitter.emit(message.MsgId, e, face);
+    var type = 0;
+    if(face.type == 'betaface'){
+      type = 1;
+    }else if(face.type == 'skybiometry'){
+      type = 2;
+    }
+    imageEventEmitter.emit(message.MsgId, e, {
+      type: type,
+      img: img,
+      data: face.data
+    });
     delete imageWaitList[message.MsgId];
     if(e){
       logger.error(e);
@@ -85,8 +95,8 @@ exports.getImageDetectData = function(msgid, callback){
         return callback(err);
       }
       var type = face.type;
-      var data = JSON.parse(face.data);
-      return callback(null, {type: type, data: database.User.adapter(data)});
+      var data = database.User.adapter(JSON.parse(face.data), type);
+      return callback(null, {type: type, data: data, img: face.img});
     });
   }
 }
@@ -95,17 +105,18 @@ exports.getImageDetectData = function(msgid, callback){
 exports.getScoreFromFace = function(data){
   var d = data.data;
   var info = '性别: ' + d.gender;
-  info += '\n年龄: ' + d.age;
-  info += '\n眼镜: ' + d.glass;
-  info += '\n种族: ' + d.race;
-  info += '\n微笑: ' + d.smile;
+  info += '<br/>年龄: ' + d.age;
+  info += '<br/>眼镜: ' + d.glass;
+  info += '<br/>种族: ' + d.race;
+  info += '<br/>微笑: ' + d.smile;
   var engine = 'faceplus';
   if(data.type == 1){
     engine = 'betaface';
   }else if(data.type == 2){
     engine = 'skybiometry'
   }
-  info += 'By ' + engine;
+  info += '<br/>By ' + engine;
+  return info;
 }
 exports.show = function(req, res){
   var msgid = decodeURIComponent(req.param('msgid') || req.params.msgid || '');
@@ -122,9 +133,9 @@ exports.show = function(req, res){
         error: err.toString()
       });
     }else{
-      var info = exports.getScoreFromFace(data.data);
+      var info = exports.getScoreFromFace(data);
       return res.render('show.html', {
-        img: img,
+        img: data.img,
         info: info,
         type: data.type
       });

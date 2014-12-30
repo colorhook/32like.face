@@ -119,7 +119,7 @@ exports.Face = {
         callback(err);
       }else{
         if(rows && rows[0]){
-          callback(null, rows)
+          callback(null, rows[0])
         }else{
           callback('notfound');
         }
