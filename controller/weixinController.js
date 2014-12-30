@@ -54,22 +54,21 @@ exports.image = function(message, callback){
       var time = ' ' + (Date.now() - start) + 'ms';
       var attributes;
       if(type == 0){
-        console.log(face);
-        attributes = face.attribute;
+        attributes = face.data.attribute;
         info += '性别: ' + attributes.gender.value;
         info += '\n年龄: ' + attributes.age.value;
         info += '\n眼镜: ' + attributes.glasses.value;
         info += '\n种族: ' + attributes.race.value;
         info += '\n微笑: ' + attributes.smile.value + ' faceplus' + time;
       }else if(type == 1){
-        attributes = face.attributes;
+        attributes = face.data.attributes;
         info += '性别: ' + attributes.gender.value;
         info += '\n年龄: ' +  attributes.age.value;
         info += '\n眼镜: ' + attributes.glasses.value;
         info += '\n种族: ' + attributes.race.value;
         info += '\n微笑: ' + attributes.smile.value + ' betaface' + time;
       }else if(type == 2){
-        attributes = face.attributes;
+        attributes = face.data.attributes;
         info += '性别: ' + attributes.gender.value;
         info += '\n年龄: ' +  attributes.age_est.value;
         info += '\n眼镜: ' + attributes.glasses.value;
