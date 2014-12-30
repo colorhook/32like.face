@@ -68,11 +68,9 @@ exports.image = function(message, callback){
        logger.debug('没有通过faceplus找到人脸:'+message.PicUrl);
        faceapi.detectByBetaFace(message.PicUrl, function(e, json){
          if(e){
-           logger.warn('没有通过beta找到人脸:'+message.PicUrl);
-           database.NoDetect.add({img:message.PicUrl, openid: message.FromUserName}, function(){
-             info = '没有找到人脸';
-             callback(null, info);
-           });
+           logger.warn('没有通过beta找到人脸:'+message.PicUrl + e.toString());
+           callback(null, '没有找到人脸');
+           database.NoDetect.add({img:message.PicUrl, openid: message.FromUserName}, function(){});
          }else{
            database.Face.add({
             faceid: json.face_id,
