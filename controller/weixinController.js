@@ -65,7 +65,8 @@ exports.image = function(message, callback){
         });
         
       }else{
-       logger.warn('没有通过faceplus找到人脸:'+message.PicUrl);
+       logger.debug('没有通过faceplus找到人脸:'+message.PicUrl);
+       callback(null, '通过faceplus找..');
        faceapi.detectByBetaFace(message.PicUrl, function(e, json){
          if(e){
            logger.warn('没有通过beta找到人脸:'+message.PicUrl);
@@ -74,11 +75,10 @@ exports.image = function(message, callback){
              callback(null, info);
            });
          }else{
-           
            database.Face.add({
-            faceid: face.face_id,
+            faceid: json.face_id,
             img: message.PicUrl,
-            data: JSON.stringify(face),
+            data: JSON.stringify(json),
             openid: message.FromUserName,
             betaface: 1,
           }, function(err){
@@ -91,8 +91,6 @@ exports.image = function(message, callback){
                callback(null, info);
             });
           });
-           
-           
          }
        });
         
