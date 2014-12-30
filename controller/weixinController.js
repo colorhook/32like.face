@@ -37,7 +37,7 @@ exports.image = function(message, callback){
   /*
   var url = 'http://f.hiphotos.baidu.com/baike/w%3D268/sign=81d9240f32fa828bd1239ae5c51e41cd/8694a4c27d1ed21b33138eefac6eddc450da3fe5.jpg'
   */
-
+  var start = Date.now();
   faceapi.detect(message.PicUrl, function(e, face){
     if(e){
       logger.error(e);
@@ -48,10 +48,10 @@ exports.image = function(message, callback){
       var type = 0;
       if(face.type == 'betaface'){
         type = 1;
-      }else if(face.type = 'skybiometry'){
+      }else if(face.type == 'skybiometry'){
         type = 2;
       }
-      
+      var time = ' ' + (Date.now() - start) + 'ms';
       var attributes;
       if(type == 0){
         attributes = face.attribute;
@@ -59,21 +59,21 @@ exports.image = function(message, callback){
         info += '\n年龄: ' + attributes.age.value;
         info += '\n眼镜: ' + attributes.glasses.value;
         info += '\n种族: ' + attributes.race.value;
-        info += '\n微笑: ' + attributes.smile.value + ' faceplus';
+        info += '\n微笑: ' + attributes.smile.value + ' faceplus' + time;
       }else if(type == 1){
         attributes = face.attributes;
         info += '性别: ' + attributes.gender.value;
         info += '\n年龄: ' +  attributes.age.value;
         info += '\n眼镜: ' + attributes.glasses.value;
         info += '\n种族: ' + attributes.race.value;
-        info += '\n微笑: ' + attributes.smile.value + ' betaface';
+        info += '\n微笑: ' + attributes.smile.value + ' betaface' + time;
       }else if(type == 2){
         attributes = face.attributes;
         info += '性别: ' + attributes.gender.value;
         info += '\n年龄: ' +  attributes.age_est.value;
         info += '\n眼镜: ' + attributes.glasses.value;
         info += '\n种族: NULL' ;
-        info += '\n微笑: ' + attributes.happiness.value + ' skybiometry';
+        info += '\n微笑: ' + attributes.happiness.value + ' skybiometry' + time;
       }
       
       callback(null, info);
