@@ -5,6 +5,7 @@ var config = require('./config');
 
 var comboController = require('./controller/comboController');
 var loginController = require('./controller/loginController');
+var weixinController = require('./controller/weixinController');
 var adminController = require('./controller/adminController');
 var userController = require('./controller/userController');
 var starController = require('./controller/starController');
@@ -36,6 +37,8 @@ module.exports = function(app){
   app.get(['/', '/index.htm', '/index.html'], function(req, res){
     res.render('index.html');
   });
+  
+  app.get('/show/:msgid', weixinController.show);
   
   app.get('/favicon.ico', function(req, res) {
     res.redirect(301, '/public/favicon.ico');

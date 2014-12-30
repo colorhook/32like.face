@@ -113,6 +113,19 @@ exports.Face = {
       }
     });
   },
+  findByMsgId: function(msgid, callback){
+    connection.query('SELECT * FROM `face` WHERE msgid = ?', msgid, function(err, rows){
+      if(err){
+        callback(err);
+      }else{
+        if(rows && rows[0]){
+          callback(null, rows)
+        }else{
+          callback('notfound');
+        }
+      }
+    });
+  },
   add: function(face, callback){
     connection.query('INSERT INTO `face` SET ?', face, callback);
   },
@@ -155,6 +168,40 @@ if(!fileutil.exist(facesetFile)){
 User
 **/
 exports.User = {
+  adapter: function(item, type){
+    var data;
+    if(item.type && item.data){
+      data = item.data;
+    }else{
+      data = item;
+    }
+    var adapterData = {};
+    var attributes;
+
+    if(!type){
+      attributes = data.attribute;
+      adapterData.gender = attributes.gender.value;
+      adapterData.age = attributes.age.value;
+      adapterData.glass = attributes.glass.value;
+      adapterData.race = attributes.race.value;
+      adapterData.smile = attributes.smiling.value;
+    }else if(type == 1){
+      attributes = data.attributes;
+      adapterData.gender = attributes.gender.value;
+      adapterData.age = attributes.age.value;
+      adapterData.glass = attributes.glasses.value;
+      adapterData.race =  attributes.race.value;
+      adapterData.smile =  attributes.smile.value;
+    }else if(type == 2){
+      attributes = data.attributes;
+      adapterData.gender = attributes.gender.value;
+      adapterData.age =  attributes.age_est.value;
+      adapterData.glass = attributes.glasses.value;
+      adapterData.race = null;
+      adapterData.smile = attributes.happiness.value;
+    }
+    return adapterData;
+  },
   list: function(page, size, callback){
     if(page == undefined || page < 1){
       page = 1;
@@ -162,7 +209,7 @@ exports.User = {
     if(size == undefined || size <= 0){
       size = 20;
     }
-    connection.query('SELECT u.id,u.openid,u.faceid,f.img,f.time,f.data,f.betaface FROM `user` AS u, `face` AS f WHERE u.faceid=f.faceid LIMIT ?,?', [(page - 1) * size, size], function(err, rows){
+    connection.query('SELECT u.id,u.openid,u.faceid,f.img,f.time,f.data,f.type,f.msgid FROM `user` AS u, `face` AS f WHERE u.faceid=f.faceid LIMIT ?,?', [(page - 1) * size, size], function(err, rows){
       if(err){
         return callback(err);
       }

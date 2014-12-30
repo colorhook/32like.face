@@ -18,21 +18,21 @@
             <th>种族</th>
             <th>微笑(0-100)</th>
             <th>颜值</th>
-            <th>由betaface识别</th>
+            <th>识别引擎</th>
             <th>时间</th>
           </tr>
       </thead>
       <tbody>
           {% for item in list %}
           <tr data-id="{{item.id}}">
-            <td>{{item.id}}</td>
-    <td><a href="/admin/face/item/{{item.faceid}}" target="_blank"><img class="img" src="{{item.img}}"/></a></td>
+            <td><a href="/show/{{item.msgid}}" target="_blank">{{item.id}}</a></td>
+    <td><a href="/admin/face/item/{{item.faceid}}"><img class="img" src="{{item.img}}"/></a></td>
             <td>{{item.gender}}</td>
             <td>{{item.age}}</td>
             <td>{{item.race}}</td>
-            <td>{{item.smiling}}</td>
+            <td>{{item.smile}}</td>
             <td>{{item.value}}</td>
-            <td>{% if item.betaface == 1 %}是{% else %}否{% endif %}</a></td>
+            <td>{{ item.type|detect_engine }}</a></td>
             <td>{{item.time|time}}</td>
           </tr>
           {% endfor %}

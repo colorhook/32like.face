@@ -41,8 +41,7 @@
             <th>id</th>
             <th>图片</th>
             <th>openid</th>
-            <th>faceid</th>
-            <th>是否由betaface识别</th>
+            <th>识别引擎</th>
             <th>时间</th>
             <th>管理</th>
           </tr>
@@ -51,10 +50,9 @@
           {% for item in list %}
           <tr data-id="{{item.id}}" data-openid="{{item.openid}}">
             <td>{{item.id}}</td>
-            <td><img src="{{item.img}}" alt="{{item.img}}"/></td>
+            <td><a href="/admin/face/item/{{item.faceid}}"><img class="img" src="{{item.img}}" alt="{{item.img}}"/></a></td>
             <td>{{item.openid}}</td>
-            <td><a href="/admin/face/item/{{item.faceid}}">{{item.faceid}}</a></td>
-            <td>{% if item.betaface == 1 %}是{% else %}否{% endif %}</a></td>
+            <td>{{ item.type|detect_engine }}</a></td>
             <td>{{item.time|time}}</td>
             <td>
               <a class="delete" data-id="{{item.id}}" href="#">删除</a>

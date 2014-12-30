@@ -24,28 +24,31 @@ exports.index = function(req, res){
   var pageCount = 20;
   database.User.getCount(function(err, count){
     if(err){
+      logger.error(err);
+      console.log(err);
       return res.redirect('admin/error');
     }
     database.User.list(page, pageCount, function(err, rows){
       if(err){
+        logger.error(err);
+        console.log(err);
         return res.redirect('admin/error');
       }
       var list = [];
       
       rows.forEach(function(item){
         var face = JSON.parse(item.data);
-        var attr = face.attribute;
-        list.push({
-          id: item.id,
-          img: item.img,
-          faceid: item.faceid,
-          age: attr.age.value,
-          smiling: attr.smiling.value,
-          glass: attr.glass.value,
-          race: attr.race.value,
-          time: item.time,
-          gender: attr.gender.value == 'Male' ? '男' : '女'
-        });
+    
+        var adapterData = database.User.adapter(face, item.type);
+        console.log(item.msgid);
+        adapterData.id = item.id;
+        adapterData.msgid = item.msgid;
+        adapterData.openid = item.openid;
+        adapterData.img = item.img;
+        adapterData.faceid = item.faceid;
+        adapterData.time = item.time;
+        adapterData.type = item.type;
+        list.push(adapterData);
       });
       
 

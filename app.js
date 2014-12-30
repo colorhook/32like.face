@@ -34,6 +34,15 @@ env.addFilter('json', function(input){
   }
   return JSON.stringify(input);
 });
+env.addFilter('detect_engine', function(type){
+  if(type == 1){
+    return "betaface";
+  }else if(type == 2){
+    return "skybiometry";
+  }else{
+    return "faceplus"
+  }
+});
 env.addFilter('time', function(input, format){
   if(!input){
     return "";

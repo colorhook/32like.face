@@ -4,6 +4,13 @@
 var database = require('../model/database');
 var logger = require('../lib/logger');
 var faceapi = require('../lib/faceapi');
+var EventEmitter = require('events').EventEmitter;
+
+
+
+var imageEventEmitter = new EventEmitter();
+
+var imageWaitList = {}
 /**
 当收到微信订阅消息后，通过weixin OpenID来查找对应的店铺
 @method subscribe
@@ -34,55 +41,30 @@ exports.image = function(message, callback){
     // PicUrl: 'http://mmsns.qpic.cn/mmsns/bfc815ygvIWcaaZlEXJV7NzhmA3Y2fc4eBOxLjpPI60Q1Q6ibYicwg/0',
     // MediaId: 'media_id',
     // MsgId: '5837397301622104395' }
-  /*
-  var url = 'http://f.hiphotos.baidu.com/baike/w%3D268/sign=81d9240f32fa828bd1239ae5c51e41cd/8694a4c27d1ed21b33138eefac6eddc450da3fe5.jpg'
-  */
-  var start = Date.now();
-  faceapi.detect(message.PicUrl, function(e, face){
+  var img = message.PicUrl;
+  imageWaitList[message.MsgId] = true;
+  callback(null, [
+    {
+      title: '这是一个看脸的世界',
+      description: '系统正在紧张地扫描你的脸孔，点开查看详情',
+      picurl: img,
+      url: 'http://face.zmzp.cn/show.html?img='+encodeURIComponent(img)
+    }
+  ]);
+  faceapi.detect(img, function(e, face){
+    imageEventEmitter.emit("complete", msgid, e, face);
+    delete imageWaitList[message.MsgId];
     if(e){
       logger.error(e);
-      database.NoDetect.add({img:message.PicUrl, openid: message.FromUserName}, function(){});
-      callback(null, "花了较长时间都未找到人脸，请换一张更好的正面照片");
+      database.NoDetect.add({img:img, openid: message.FromUserName}, function(){});
     }else{
-      var info = '';
-      var type = 0;
-      if(face.type == 'betaface'){
-        type = 1;
-      }else if(face.type == 'skybiometry'){
-        type = 2;
-      }
-      var time = ' ' + (Date.now() - start) + 'ms';
-      var attributes;
-      if(type == 0){
-        attributes = face.data.attribute;
-        info += '性别: ' + attributes.gender.value;
-        info += '\n年龄: ' + attributes.age.value;
-        info += '\n眼镜: ' + attributes.glass.value;
-        info += '\n种族: ' + attributes.race.value;
-        info += '\n微笑: ' + attributes.smiling.value + ' faceplus' + time;
-      }else if(type == 1){
-        attributes = face.data.attributes;
-        info += '性别: ' + attributes.gender.value;
-        info += '\n年龄: ' +  attributes.age.value;
-        info += '\n眼镜: ' + attributes.glasses.value;
-        info += '\n种族: ' + attributes.race.value;
-        info += '\n微笑: ' + attributes.smile.value + ' betaface' + time;
-      }else if(type == 2){
-        attributes = face.data.attributes;
-        info += '性别: ' + attributes.gender.value;
-        info += '\n年龄: ' +  attributes.age_est.value;
-        info += '\n眼镜: ' + attributes.glasses.value;
-        info += '\n种族: NULL' ;
-        info += '\n微笑: ' + attributes.happiness.value + ' skybiometry' + time;
-      }
-      
-      callback(null, info);
       database.Face.add({
         faceid: face.data.face_id,
+        msgid: message.MsgId,
         img: message.PicUrl,
-        data: JSON.stringify(face),
+        data: JSON.stringify(face.data),
         openid: message.FromUserName,
-        betaface: type
+        type: face.type
       }, function(err){
         err && logger.error(err);
         database.User.setOpenId(message.FromUserName, face.data.face_id, function(err){
@@ -90,5 +72,62 @@ exports.image = function(message, callback){
         });
       });
     }
-  }, 4000);
+  }, 30000);
+}
+
+
+exports.getImageDetectData = function(msgid, callback){
+  if(imageWaitList[msgid]){
+    imageEventEmitter.once(msgid, callback);
+  }else{
+    database.Face.findByMsgId(msgid, function(err, face){
+      if(err){
+        return callback(err);
+      }
+      var type = face.type;
+      var data = JSON.parse(face.data);
+      return callback(null, {type: type, data: database.User.adapter(data)});
+    });
+  }
+}
+
+
+exports.getScoreFromFace = function(data){
+  var d = data.data;
+  var info = '性别: ' + d.gender;
+  info += '\n年龄: ' + d.age;
+  info += '\n眼镜: ' + d.glass;
+  info += '\n种族: ' + d.race;
+  info += '\n微笑: ' + d.smile;
+  var engine = 'faceplus';
+  if(data.type == 1){
+    engine = 'betaface';
+  }else if(data.type == 2){
+    engine = 'skybiometry'
+  }
+  info += 'By ' + engine;
+}
+exports.show = function(req, res){
+  var msgid = decodeURIComponent(req.param('msgid') || req.params.msgid || '');
+  if(!msgid){
+    return res.render('show-error.html', {
+      img: 'http://face.zmzp.cn/img/qrcode.jpg',
+      error: '没有制定图片'
+    });
+  }
+  exports.getImageDetectData(msgid, function(err, data){
+    if(err){
+      return res.render('show-error.html', {
+        img: 'http://face.zmzp.cn/img/qrcode.jpg',
+        error: err.toString()
+      });
+    }else{
+      var info = exports.getScoreFromFace(data.data);
+      return res.render('show.html', {
+        img: img,
+        info: info,
+        type: data.type
+      });
+    }
+  });
 }
