@@ -56,7 +56,6 @@ exports.image = function(message, callback){
     if(e){
       logger.error(e);
       database.NoDetect.add({img:img, openid: message.FromUserName}, function(){});
-      imageEventEmitter.emit(message.MsgId, e);
     }else{
       var type = 0;
       if(face.type == 'betaface'){
@@ -64,11 +63,6 @@ exports.image = function(message, callback){
       }else if(face.type == 'skybiometry'){
         type = 2;
       }
-      imageEventEmitter.emit(message.MsgId, null, {
-        type: type,
-        img: img,
-        data: face.data
-      });
       database.Face.add({
         faceid: face.data.face_id,
         msgid: message.MsgId,
@@ -80,6 +74,7 @@ exports.image = function(message, callback){
         err && logger.error(err);
         database.User.setOpenId(message.FromUserName, face.data.face_id, function(err){
           err && logger.error(err);
+          imageEventEmitter.emit(message.MsgId);
         });
       });
     }
