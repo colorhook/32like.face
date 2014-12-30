@@ -78,14 +78,14 @@ exports.image = function(message, callback){
       
       callback(null, info);
       database.Face.add({
-        faceid: face.face_id,
+        faceid: face.data.face_id,
         img: message.PicUrl,
         data: JSON.stringify(face),
         openid: message.FromUserName,
         betaface: type
       }, function(err){
         err && logger.error(err);
-        database.User.setOpenId(message.FromUserName, face.face_id, function(err){
+        database.User.setOpenId(message.FromUserName, face.data.face_id, function(err){
           err && logger.error(err);
         });
       });
