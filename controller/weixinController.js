@@ -59,7 +59,7 @@ exports.image = function(message, callback){
         info += '\n年龄: ' + attributes.age.value;
         info += '\n眼镜: ' + attributes.glass.value;
         info += '\n种族: ' + attributes.race.value;
-        info += '\n微笑: ' + attributes.smile.value + ' faceplus' + time;
+        info += '\n微笑: ' + attributes.smiling.value + ' faceplus' + time;
       }else if(type == 1){
         attributes = face.data.attributes;
         info += '性别: ' + attributes.gender.value;
