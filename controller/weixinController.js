@@ -46,9 +46,9 @@ exports.image = function(message, callback){
     }else{
       var info = '';
       var type = 0;
-      if(result.type == 'betaface'){
+      if(face.type == 'betaface'){
         type = 1;
-      }else if(result.type = 'skybiometry'){
+      }else if(face.type = 'skybiometry'){
         type = 2;
       }
       
