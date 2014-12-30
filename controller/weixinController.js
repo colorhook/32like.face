@@ -66,7 +66,6 @@ exports.image = function(message, callback){
         
       }else{
        logger.debug('没有通过faceplus找到人脸:'+message.PicUrl);
-       callback(null, '通过faceplus找..');
        faceapi.detectByBetaFace(message.PicUrl, function(e, json){
          if(e){
            logger.warn('没有通过beta找到人脸:'+message.PicUrl);
