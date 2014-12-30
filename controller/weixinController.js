@@ -83,13 +83,15 @@ exports.image = function(message, callback){
         });
       });
     }
-  }, 30000);
+  }, 40000);
 }
 
 
 exports.getImageDetectData = function(msgid, callback){
   if(imageWaitList[msgid]){
-    imageEventEmitter.once(msgid, callback);
+    imageEventEmitter.once(msgid, function(){
+      exports.getImageDetectData(msgid, callback);
+    });
   }else{
     database.Face.findByMsgId(msgid, function(err, face){
       if(err){
