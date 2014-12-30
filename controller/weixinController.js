@@ -52,7 +52,7 @@ exports.image = function(message, callback){
     }
   ]);
   faceapi.detect(img, function(e, face){
-    imageEventEmitter.emit("complete", msgid, e, face);
+    imageEventEmitter.emit(message.MsgId, e, face);
     delete imageWaitList[message.MsgId];
     if(e){
       logger.error(e);
