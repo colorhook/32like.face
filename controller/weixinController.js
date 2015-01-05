@@ -122,7 +122,13 @@ exports.image = function(message, callback){
       //FacePlus to find candidate
       if(type == 0){
         var facesetid = database.Faceset.getCurrentId();
+        logger.debug("start search face, faceid: " + face.data.face_id + " facesetid: " + facesetid);
         faceapi.search(face.data.face_id, facesetid, function(e, candidate){
+          if(candidate){
+            logger.debug(candidate);
+          }else{
+            logger.debug("not searched - face_id: " + face.data.face_id + " facesetid:" + facesetid);
+          }
           face.data.candidate = candidate;
           saveData();
         });
@@ -148,7 +154,7 @@ exports.getImageDetectData = function(msgid, callback){
       var type = face.type;
       var json = JSON.parse(face.data);
       var data = database.User.adapter(json, type);
-      var result = {type: type, data: data, img: face.img};
+      var result = {type: type, data: data, img: face.img, json:json};
       if(json.candidate && json.condidate.face_id){
         database.Star.findByFaceId(json.condidate.face_id, function(e, star){
           if(star){
@@ -172,14 +178,15 @@ exports.getImageDetectData = function(msgid, callback){
 
 exports.getScoreFromFace = function(data){
   var d = data.data;
+  var json = data.json;
   var info = '性别: ' + (d.gender.toLowerCase() == 'male' ? '男' : '女');
   info += '<br/>年龄: ' + d.age;
 
   if(data.star){
     info += '<br/>最像明星：' + data.star.name;
   }
-  if(data.keywords && data.keywords.length){
-    info += '<br/>关键字：' + data.keywords.join(',');
+  if(json.keywords && json.keywords.length){
+    info += '<br/>关键字：' + json.keywords.join(',');
   }
   var engine = 'faceplus';
   if(data.type == 1){
