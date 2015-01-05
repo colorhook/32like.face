@@ -6,11 +6,32 @@ var logger = require('../lib/logger');
 var faceapi = require('../lib/faceapi');
 var EventEmitter = require('events').EventEmitter;
 
-
-
 var imageEventEmitter = new EventEmitter();
 
 var imageWaitList = {}
+
+
+exports.parallel = function(kv, callback){
+  var arr = Object.keys(kv);
+  if(!arr.length){
+    return callback({});
+  }
+  var results = {};
+  var finished = 0;
+  function checkCompleted(){
+    if(finished >= arr.length){
+      callback(results);
+    }
+  }
+  arr.forEach(function(key){
+    var func = kv[key];
+    func(function(err, result){
+      results[key] = {e: err, result: result};
+      finished++;
+      checkCompleted();
+    });
+  }
+}
 /**
 当收到微信订阅消息后，通过weixin OpenID来查找对应的店铺
 @method subscribe
@@ -51,11 +72,26 @@ exports.image = function(message, callback){
       url: 'http://face.zmzp.cn/show/' + message.MsgId
     }
   ]);
-  faceapi.detect(img, function(e, face){
+  
+  exports.parallel({
+    keywords: function(){
+    },
+    detect: function(callback){
+      faceapi.detect(img, callback);
+    }
+  }, function(results){
     delete imageWaitList[message.MsgId];
+    
+    var keywords = results.keywords.result || [];
+    var e = results.detect.e;
+    var face = results.detect.result;
+    face.data.keywords = keywords;
+    
     if(e){
       logger.error(e);
-      database.NoDetect.add({img:img, openid: message.FromUserName}, function(){});
+      database.NoDetect.add({img:img, 
+       openid: message.FromUserName, 
+       keywords: keywords}, function(){});
       imageEventEmitter.emit(message.MsgId);
     }else{
       var type = 0;
@@ -79,7 +115,8 @@ exports.image = function(message, callback){
         });
       });
     }
-  }, 40000);
+    
+  });
 }
 
 
@@ -117,6 +154,7 @@ exports.getScoreFromFace = function(data){
   info += '<br/>By ' + engine;
   return info;
 }
+
 exports.show = function(req, res){
   var msgid = decodeURIComponent(req.param('msgid') || req.params.msgid || '');
   if(!msgid){
