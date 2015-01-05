@@ -32,11 +32,34 @@
   </form>
 </div>
 
+<!-- remove Modal -->
+<div class="modal fade" id="deleteAllModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <form method="post" action="/admin/faceset/face/delete-all">
+    <input class="facesetid" name="facesetid" type="hidden" value="{{facesetid}}"/>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <h4 class="modal-title">删除faceset中的所有face</h4>
+        </div>
+        <div class="modal-body">
+          <p class="warn">高危操作！该操作将永久删除faceset中的face数据，确认要继续执行？</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default btn-cancel" data-dismiss="modal">取消</button>
+          <button type="submit" class="btn btn-primary btn-submit">确定</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
 <div class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">
       <span class="badge">{{total}}</span> faceset: {{facesetid}}
       <!--<a style="color:#fff" href="javascript:void" id="J_face_add" class="btn btn-primary btn-xs pull-right">增加</a>-->
+      <a style="color:#fff" href="javascript:void"  id="J_face_clear" class="btn btn-primary btn-xs pull-right">删除所有</a>
     </h3>
     
   </div>
@@ -103,10 +126,15 @@
 <script>
 $(function(){
   var removeModal = $("#removeModal");
+  var deleteAllModal = $("#deleteAllModal");
   $(".table").delegate(".delete", "click", function(e){
     e.preventDefault();
     removeModal.find(".id").val($(e.currentTarget).parents('tr').attr('data-id'));
     removeModal.modal();
+  });
+  $("#J_face_clear").click(function(e){
+    e.preventDefault();
+     deleteAllModal.modal();
   });
 });
 </script>

@@ -20,11 +20,8 @@
             <th>图片</th>
             <th>性别</th>
             <th>年龄</th>
-            <th>种族</th>
-            <th>微笑(0-100)</th>
-            <th>颜值</th>
             <th>识别引擎</th>
-            <th>时间</th>
+            <th>发布时间</th>
           </tr>
       </thead>
       <tbody>
@@ -34,9 +31,6 @@
     <td><a href="/admin/face/item/{{item.faceid}}"><img class="img" src="{{item.img}}"/></a></td>
             <td>{{item.gender}}</td>
             <td>{{item.age}}</td>
-            <td>{{item.race}}</td>
-            <td>{{item.smile}}</td>
-            <td>{{item.value}}</td>
             <td>{{ item.type|detect_engine }}</a></td>
             <td>{{item.time|time}}</td>
           </tr>

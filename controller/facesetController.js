@@ -23,6 +23,17 @@ exports.index = function(req, res){
   });
 }
 
+
+exports.removeAllFacesFromFaceset = function(facesetid, callback){
+  faceapi.getFacesFromFaceset(facesetid, function(err, faces){
+    var faceid = [];
+    faces.forEach(function(item){
+      faceid.push(item.face_id);
+    });
+    faceapi.removeFaceFromFaceset(faceid, facesetid, callback);
+  });
+}
+
 /**
 faceset detail
 @method index
@@ -48,9 +59,17 @@ exports.faceset = function(req, res){
       return res.redirect('admin/error');
     }
     var total = faces.length;
-    
+
     faces = faces.splice((page - 1) * pageCount, pageCount);
-    
+    if(faces.length == 0){
+      return res.render('admin/faceset-face.html', {
+          facesetid: id,
+          total: 0,
+          page: 1,
+          size: 1,
+          list: []
+        });
+    }
     var size = faces.length, completed = 0;
     faces.forEach(function(item, index){
       database.Star.findByFaceId(item.face_id, function(err, data){
@@ -163,6 +182,33 @@ exports.deleteFace = function(req, res){
     return res.redirect('/admin/faceset/item/' + facesetid);
   });
 }
+
+/**
+delete all face from faceset
+@method deleteAll
+@param {HttpRequest} req
+@param {HttpResponse} res
+**/
+exports.deleteAll = function(req, res){
+  var facesetid = req.param('facesetid');
+  var info;
+  if(!facesetid){
+    info = 'facesetid不能为空';
+  }else{
+    req.flash('info', '');
+  }
+  if(info){
+    req.flash('info', info);
+    return res.redirect('/admin/faceset');
+  }
+  exports.removeAllFacesFromFaceset(facesetid, function(err){
+    if(err){
+      logger.error(err);
+      req.flash('info', err.toString());
+    }
+    return res.redirect('/admin/faceset/item/' + facesetid);
+  });
+};
 /**
 train faceset
 @method train
