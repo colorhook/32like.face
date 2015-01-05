@@ -145,24 +145,14 @@ exports.Face = {
   }
 }
 
-var facesetFile = __dirname + '/../config/facesetid.txt';
-var currentId;
+var currentId = '32dfc4d4a127e5858667f0b6c7d115f8'
 exports.Faceset = {
   getCurrentId: function(){
-    if(!currentId){
-      currentId = fileutil.read(facesetFile);
-    }
     return currentId;
   },
   setCurrentId: function(id){
     currentId = id;
-    fileutil.write(facesetFile, currentId);
   }
-}
-
-if(!fileutil.exist(facesetFile)){
-  fileutil.touch(facesetFile);
-  exports.Faceset.setCurrentId('c8bc94894ab3eca18fcc1e84bf387ccb');
 }
 /**
 User
