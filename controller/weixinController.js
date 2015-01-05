@@ -155,14 +155,14 @@ exports.getImageDetectData = function(msgid, callback){
       var json = JSON.parse(face.data);
       var data = database.User.adapter(json, type);
       var result = {type: type, data: data, img: face.img, json:json};
-      if(json.candidate && json.condidate.face_id){
-        database.Star.findByFaceId(json.condidate.face_id, function(e, star){
+      if(json.candidate && json.candidate.face_id){
+        database.Star.findByFaceId(json.candidate.face_id, function(e, star){
           if(star){
-            database.Face.findByFaceId(json.condidate.face_id, function(e, f){
+            database.Face.findByFaceId(json.candidate.face_id, function(e, f){
               if(f){
                 star.img = f.img;
               }
-              result.star = {name: star.name, img:star.img, faceid: json.condidate.face_id};
+              result.star = {name: star.name, img:star.img, faceid: json.candidate.face_id};
               return callback(null, result);
             });
           }else{
