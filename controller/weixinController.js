@@ -158,7 +158,7 @@ exports.getImageDetectData = function(msgid, callback){
       if(json.candidate && json.candidate.face_id){
         database.Star.findByFaceId(json.candidate.face_id, function(e, star){
           if(star){
-            database.Face.findByFaceId(json.candidate.face_id, function(e, f){
+            database.Face.find(json.candidate.face_id, function(e, f){
               if(f){
                 star.img = f.img;
               }
