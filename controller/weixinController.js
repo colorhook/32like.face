@@ -169,8 +169,9 @@ exports.getImageDetectData = function(msgid, callback){
             return callback(null, result);
           }
         });
+      }else{
+        return callback(null, result);
       }
-      return callback(null, result);
     });
   }
 }
