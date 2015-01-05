@@ -48,7 +48,7 @@
     {% if size > 1 %}
     <ul class="pagination">
       {% if page == 1 %}
-      <li class="disabled"><a href="#">&laquo;</a></li>
+      <li class="disabled"><a href="javascript:void">&laquo;</a></li>
       {% else %}
       <li><a href="/admin/log?page={{ page - 1 }}">&laquo;</a></li>
       {% endif %}
@@ -62,7 +62,7 @@
       {%- endfor %}
       
       {% if page == size %}
-      <li class="disabled"><a href="#">&raquo;</a></li>
+      <li class="disabled"><a href="javascript:void">&raquo;</a></li>
       {% else %}
       <li><a href="/admin/log?page={{ page + 1 }}">&raquo;</a></li>
       {% endif %}

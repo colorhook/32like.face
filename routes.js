@@ -83,6 +83,7 @@ module.exports = function(app){
   
   app.post('/admin/faceset/add', facesetController.add);
   app.post('/admin/faceset/delete', facesetController.delete);
+  app.post('/admin/faceset/train', facesetController.train);
   app.post('/admin/faceset/face/delete', facesetController.deleteFace);
   
   app.get('/admin/nodetect', nodetectController.index);

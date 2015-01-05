@@ -30,7 +30,7 @@ exports.parallel = function(kv, callback){
       finished++;
       checkCompleted();
     });
-  }
+  });
 }
 /**
 当收到微信订阅消息后，通过weixin OpenID来查找对应的店铺
@@ -74,7 +74,8 @@ exports.image = function(message, callback){
   ]);
   
   exports.parallel({
-    keywords: function(){
+    keywords: function(callback){
+      faceapi.getKeywordsByBaidu(img, callback);
     },
     detect: function(callback){
       faceapi.detect(img, callback);
@@ -89,9 +90,11 @@ exports.image = function(message, callback){
     
     if(e){
       logger.error(e);
-      database.NoDetect.add({img:img, 
-       openid: message.FromUserName, 
-       keywords: keywords}, function(){});
+      database.NoDetect.add({
+        img:img, 
+        openid: message.FromUserName, 
+        keywords: keywords
+      }, function(){});
       imageEventEmitter.emit(message.MsgId);
     }else{
       var type = 0;
@@ -100,20 +103,32 @@ exports.image = function(message, callback){
       }else if(face.type == 'skybiometry'){
         type = 2;
       }
-      database.Face.add({
-        faceid: face.data.face_id,
-        msgid: message.MsgId,
-        img: message.PicUrl,
-        data: JSON.stringify(face.data),
-        openid: message.FromUserName,
-        type: type
-      }, function(err){
-        err && logger.error(err);
-        database.User.setOpenId(message.FromUserName, face.data.face_id, function(err){
+      var saveData = function(){
+        database.Face.add({
+          faceid: face.data.face_id,
+          msgid: message.MsgId,
+          img: message.PicUrl,
+          data: JSON.stringify(face.data),
+          openid: message.FromUserName,
+          type: type
+        }, function(err){
           err && logger.error(err);
-          imageEventEmitter.emit(message.MsgId);
+          database.User.setOpenId(message.FromUserName, face.data.face_id, function(err){
+            err && logger.error(err);
+            imageEventEmitter.emit(message.MsgId);
+          });
         });
-      });
+      }
+      //FacePlus to find candidate
+      if(type == 0){
+        var facesetid = database.Faceset.getCurrentId();
+        faceapi.search(face.data.face_id, facesetid, function(e, candidate){
+          face.data.candidate = candidate;
+          saveData();
+        });
+      }else{
+        saveData();
+      }
     }
     
   });
@@ -131,8 +146,25 @@ exports.getImageDetectData = function(msgid, callback){
         return callback(err);
       }
       var type = face.type;
-      var data = database.User.adapter(JSON.parse(face.data), type);
-      return callback(null, {type: type, data: data, img: face.img});
+      var json = JSON.parse(face.data);
+      var data = database.User.adapter(json, type);
+      var result = {type: type, data: data, img: face.img};
+      if(json.candidate && json.condidate.face_id){
+        database.Star.findByFaceId(json.condidate.face_id, function(e, star){
+          if(star){
+            database.Face.findByFaceId(json.condidate.face_id, function(e, f){
+              if(f){
+                star.img = f.img;
+              }
+              result.star = {name: star.name, img:star.img, faceid: json.condidate.face_id};
+              return callback(null, result);
+            });
+          }else{
+            return callback(null, result);
+          }
+        });
+      }
+      return callback(null, result);
     });
   }
 }
@@ -140,11 +172,15 @@ exports.getImageDetectData = function(msgid, callback){
 
 exports.getScoreFromFace = function(data){
   var d = data.data;
-  var info = '性别: ' + d.gender;
+  var info = '性别: ' + (d.gender.toLowerCase() == 'male' ? '男' : '女');
   info += '<br/>年龄: ' + d.age;
-  info += '<br/>眼镜: ' + d.glass;
-  info += '<br/>种族: ' + d.race;
-  info += '<br/>微笑: ' + d.smile;
+
+  if(data.star){
+    info += '<br/>最像明星：' + data.star.name;
+  }
+  if(data.keywords && data.keywords.length){
+    info += '<br/>关键字：' + data.keywords.join(',');
+  }
   var engine = 'faceplus';
   if(data.type == 1){
     engine = 'betaface';

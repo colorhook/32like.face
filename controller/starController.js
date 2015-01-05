@@ -94,14 +94,11 @@ exports.delete = function(req, res){
 
 
 exports.addStar = function(img, callback){
-   faceapi.detect(img, function(e, result){
+   faceapi.detectByFacePlus(img, function(e, result){
      if(e){
       return callback(e);
      }
-     if(!result || !result.face || !result.face.length){
-      return callback('noface');
-     }
-     var face = result.face[0];
+     var face = result;
      var facesetid = database.Faceset.getCurrentId();
      faceapi.addFaceToFaceset(face.face_id, facesetid, function(e){
        if(e){

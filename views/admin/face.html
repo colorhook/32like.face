@@ -49,7 +49,7 @@
       <tbody>
           {% for item in list %}
           <tr data-id="{{item.id}}" data-openid="{{item.openid}}">
-            <td>{{item.id}}</td>
+            <td><a href="/show/{{item.msgid}}" target="_blank">{{item.id}}</a></td>
             <td><a href="/admin/face/item/{{item.faceid}}"><img class="img" src="{{item.img}}" alt="{{item.img}}"/></a></td>
             <td>{{item.openid}}</td>
             <td>{{ item.type|detect_engine }}</a></td>
@@ -65,7 +65,7 @@
     {% if size > 1 %}
     <ul class="pagination">
       {% if page == 1 %}
-      <li class="disabled"><a href="#">&laquo;</a></li>
+      <li class="disabled"><a href="javascript:void">&laquo;</a></li>
       {% else %}
       <li><a href="/admin/user?page={{ page - 1 }}">&laquo;</a></li>
       {% endif %}
@@ -79,7 +79,7 @@
       {%- endfor %}
       
       {% if page == size %}
-      <li class="disabled"><a href="#">&raquo;</a></li>
+      <li class="disabled"><a href="javascript:void">&raquo;</a></li>
       {% else %}
       <li><a href="/admin/user?page={{ page + 1 }}">&raquo;</a></li>
       {% endif %}

@@ -2,6 +2,12 @@
 {% set title = "star列表" %}
 {% extends "admin/base.html" %}
 {% block body %}
+{% if info and info != "" %}
+<div class="alert alert-danger alert-dismissible fade in" role="alert">
+  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+  <p>{{ info }}</p>
+</div>
+{% endif %}
 <!-- remove Modal -->
 <div class="modal fade" id="removeModal" tabindex="-1" role="dialog" aria-hidden="true">
   <form method="post" action="/admin/star/delete">
@@ -70,7 +76,7 @@
     {% if size > 1 %}
     <ul class="pagination">
       {% if page == 1 %}
-      <li class="disabled"><a href="#">&laquo;</a></li>
+      <li class="disabled"><a href="javascript:void">&laquo;</a></li>
       {% else %}
       <li><a href="/admin/star?page={{ page - 1 }}">&laquo;</a></li>
       {% endif %}
@@ -84,7 +90,7 @@
       {%- endfor %}
       
       {% if page == size %}
-      <li class="disabled"><a href="#">&raquo;</a></li>
+      <li class="disabled"><a href="javascript:void">&raquo;</a></li>
       {% else %}
       <li><a href="/admin/star?page={{ page + 1 }}">&raquo;</a></li>
       {% endif %}

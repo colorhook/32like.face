@@ -17,7 +17,8 @@ exports.index = function(req, res){
       return res.redirect('admin/error');
     }
     res.render('admin/faceset.html', {
-      list: faceset
+      list: faceset,
+      info: req.flash('info')
     });
   });
 }
@@ -91,6 +92,8 @@ exports.add = function(req, res){
   if(info){
     req.flash('info', info);
     return res.redirect('/admin/faceset');
+  }else{
+    req.flash('info', '');
   }
   
   faceapi.createFaceset(name, function(err){
@@ -117,6 +120,8 @@ exports.delete = function(req, res){
   if(info){
     req.flash('info', info);
     return res.redirect('/admin/faceset');
+  }else{
+    req.flash('info', '');
   }
   
   faceapi.removeFaceset(id, function(err){
@@ -142,6 +147,8 @@ exports.deleteFace = function(req, res){
     info = 'id不能为空';
   }else if(!facesetid){
     info = 'facesetid不能为空';
+  }else{
+    req.flash('info', '');
   }
   if(info){
     req.flash('info', info);
@@ -154,5 +161,35 @@ exports.deleteFace = function(req, res){
       req.flash('info', err.toString());
     }
     return res.redirect('/admin/faceset/item/' + facesetid);
+  });
+}
+/**
+train faceset
+@method train
+@param {HttpRequest} req
+@param {HttpResponse} res
+**/
+exports.train = function(req, res){
+  var facesetid = req.param('facesetid');
+  var info;
+  
+  if(!facesetid){
+    info = 'facesetid不能为空';
+  }
+  if(info){
+    req.flash('info', info);
+    return res.redirect('/admin/faceset');
+  }else{
+    req.flash('info', '');
+  }
+  faceapi.trainFaceset(facesetid, function(err, result){
+    if(err){
+      logger.error(err);
+      console.log(err);
+      req.flash('info', err.toString());
+    }else{
+      req.flash('info', 'train session id: ' + result.session_id);
+    }
+    return res.redirect('back');
   });
 }
