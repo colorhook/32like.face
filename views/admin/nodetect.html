@@ -47,15 +47,17 @@
             <th>图片</th>
             <th>openid</th>
             <th>时间</th>
+            <th>关键字</th>
             <th>管理</th>
           </tr>
       </thead>
       <tbody>
           {% for item in list %}
           <tr data-id="{{item.id}}" data-openid="{{item.openid}}">
-            <td>{{item.id}}</td>
+            <td><a href="/show/{{item.msgid}}" target="_blank">{{item.id}}</a></td>
             <td><img src="{{item.img}}" alt="{{item.img}}"/></td>
             <td>{{item.openid}}</td>
+            <td>{{item.keywords}}</td>
             <td>{{item.time|time}}</td>
             <td>
               <a class="delete" data-id="{{item.id}}" href="#">删除</a>

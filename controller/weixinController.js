@@ -85,7 +85,6 @@ exports.image = function(message, callback){
     
     var keywords = results.keywords.result || [];
     var e = results.detect.e;
-    console.log(results.detect);
     if(e){
       logger.error(e);
       database.NoDetect.add({
