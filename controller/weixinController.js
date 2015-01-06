@@ -85,8 +85,6 @@ exports.image = function(message, callback){
     
     var keywords = results.keywords.result || [];
     var e = results.detect.e;
-    var face = results.detect.result;
-    face.data.keywords = keywords;
     console.log(results.detect);
     if(e){
       logger.error(e);
@@ -101,6 +99,8 @@ exports.image = function(message, callback){
       });
     }else{
       var type = 0;
+      var face = results.detect.result;
+      face.data.keywords = keywords;
       if(face.type == 'betaface'){
         type = 1;
       }else if(face.type == 'skybiometry'){
