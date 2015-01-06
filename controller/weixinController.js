@@ -87,7 +87,7 @@ exports.image = function(message, callback){
     var e = results.detect.e;
     var face = results.detect.result;
     face.data.keywords = keywords;
-    
+    console.log(results.detect);
     if(e){
       logger.error(e);
       database.NoDetect.add({
@@ -95,7 +95,8 @@ exports.image = function(message, callback){
         msgid: message.MsgId,
         openid: message.FromUserName, 
         keywords: JSON.stringify(keywords)
-      }, function(){
+      }, function(e2){
+        e2 && logger.error(e2);
         imageEventEmitter.emit(message.MsgId);
       });
     }else{
