@@ -220,7 +220,7 @@ exports.show = function(req, res){
         }else{
           var keywords;
           try{
-            keywords = JSON.parse(data.keywords).join(',');
+            keywords = JSON.parse(d.keywords).join(',');
           }catch(e2){}
           var info = '无法识别人脸';
           if(keywords){
