@@ -218,9 +218,17 @@ exports.show = function(req, res){
             error: 'msgid无效'
           });
         }else{
+          var keywords;
+          try{
+            keywords = JSON.parse(data.keywords).join(',');
+          }catch(e2){}
+          var info = '无法识别人脸';
+          if(keywords){
+            info += '<br/>' + keywords;
+          }
           return res.render('show.html', {
             img: d.img,
-            info: '无法识别人脸'
+            info: info
           });
         }
       });
