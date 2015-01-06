@@ -78,7 +78,7 @@ exports.image = function(message, callback){
       faceapi.getKeywordsByBaidu(img, callback);
     },
     detect: function(callback){
-      faceapi.detect(img, callback);
+      faceapi.detect(img, callback, 18000);
     }
   }, function(results){
     delete imageWaitList[message.MsgId];
@@ -92,10 +92,12 @@ exports.image = function(message, callback){
       logger.error(e);
       database.NoDetect.add({
         img:img, 
+        msgid: message.MsgId,
         openid: message.FromUserName, 
-        keywords: keywords
-      }, function(){});
-      imageEventEmitter.emit(message.MsgId);
+        keywords: JSON.stringify(keywords)
+      }, function(){
+        imageEventEmitter.emit(message.MsgId);
+      });
     }else{
       var type = 0;
       if(face.type == 'betaface'){
@@ -127,7 +129,7 @@ exports.image = function(message, callback){
           if(candidate){
             logger.debug(candidate);
           }else{
-            logger.debug("not searched - face_id: " + face.data.face_id + " facesetid:" + facesetid);
+            logger.debug("nothing searched");
           }
           face.data.candidate = candidate;
           saveData();
@@ -195,7 +197,7 @@ exports.getScoreFromFace = function(data){
   }else if(data.type == 2){
     engine = 'skybiometry'
   }
-  info += '<br/>By ' + engine;
+  //info += '<br/>By ' + engine;
   return info;
 }
 
@@ -204,15 +206,25 @@ exports.show = function(req, res){
   if(!msgid){
     return res.render('show-error.html', {
       img: 'http://face.zmzp.cn/img/qrcode.jpg',
-      error: '没有制定图片'
+      error: '没有指定msgid'
     });
   }
   exports.getImageDetectData(msgid, function(err, data){
     if(err){
-      return res.render('show-error.html', {
-        img: 'http://face.zmzp.cn/img/qrcode.jpg',
-        error: err.toString()
+      if(database.NoDetect.findByMsgId(msgid, function(e, d){
+        if(e || !d){
+          return res.render('show-error.html', {
+            img: 'http://face.zmzp.cn/img/qrcode.jpg',
+            error: 'msgid无效'
+          });
+        }else{
+          return res.render('show.html', {
+            img: d.img,
+            info: '无法识别人脸'
+          });
+        }
       });
+      
     }else{
       var info = exports.getScoreFromFace(data);
       return res.render('show.html', {
