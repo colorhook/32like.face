@@ -55,6 +55,51 @@ body{position:relative;padding-bottom:150px;min-height:100%;width:100%;}
   <div class="container">
   </div>
 </div>
-  
+<script>
+document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+  document.querySelector("#footer .container").innerHTML = location.href;
+  var imgUrl = "{{img}}";
+  var lineLink = location.href;
+  var descContent = '真的是太惊讶了，我最像的明星居然是???';
+  var shareTitle = '看脸的世界';
+  var appid = '';
+  // 发送给好友
+  WeixinJSBridge.on('menu:share:appmessage', function(argv){
+    WeixinJSBridge.invoke('sendAppMessage',{
+      "appid": appid,
+      "img_url": imgUrl,
+      "img_width": "200",
+      "img_height": "200",
+      "link": lineLink,
+      "desc": descContent,
+      "title": shareTitle
+    }, function(res) {
+      //_report('send_msg', res.err_msg);
+    })
+  });
+  // 分享到朋友圈
+  WeixinJSBridge.on('menu:share:timeline', function(argv){
+    WeixinJSBridge.invoke('shareTimeline',{
+      "img_url": imgUrl,
+      "img_width": "200",
+      "img_height": "200",
+      "link": lineLink,
+      "desc": descContent,
+      "title": shareTitle
+    }, function(res) {
+      //_report('timeline', res.err_msg);
+    });
+  });
+  // 分享到微博
+  WeixinJSBridge.on('menu:share:weibo', function(argv){
+    WeixinJSBridge.invoke('shareWeibo',{
+      "content": descContent,
+      "url": lineLink,
+    }, function(res) {
+      //_report('weibo', res.err_msg);
+    });
+  });
+}, false);
+</script>
 </body>
 </html>
