@@ -71,6 +71,19 @@ exports.NoDetect = {
       }
     });
   },
+  findByMsgId: function(msgid, callback){
+    connection.query('SELECT * FROM `nodetect` WHERE msgid = ?', msgid, function(err, rows){
+      if(err){
+        callback(err);
+      }else{
+        if(rows && rows[0]){
+          callback(null, rows[0]);
+        }else{
+          callback('notfound');
+        }
+      }
+    });
+  },
   add: function(face, callback){
     connection.query('INSERT INTO `nodetect` SET ?', face, callback);
   },

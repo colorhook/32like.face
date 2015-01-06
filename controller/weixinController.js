@@ -211,7 +211,7 @@ exports.show = function(req, res){
   }
   exports.getImageDetectData(msgid, function(err, data){
     if(err){
-      if(database.NoDetect.findByMsgId(msgid, function(e, d){
+      database.NoDetect.findByMsgId(msgid, function(e, d){
         if(e || !d){
           return res.render('show-error.html', {
             img: 'http://face.zmzp.cn/img/qrcode.jpg',
