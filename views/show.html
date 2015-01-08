@@ -56,52 +56,27 @@ body{position:relative;padding-bottom:150px;min-height:100%;width:100%;}
   </div>
 </div>
 <script>
-document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
-  
-  var imgUrl = "{{img}}";
-  var lineLink = location.href;
-  var descContent = '真的是太惊讶了，我最像的明星居然是???';
-  var shareTitle = '看脸的世界';
-  var appid = '';
-  document.querySelector("#footer .container").innerHTML = location.href;
-  // 发送给好友
-  WeixinJSBridge.on('menu:share:appmessage', function(argv){
-    alert(shareTitle);
-    WeixinJSBridge.invoke('sendAppMessage',{
-      "appid": appid,
-      "img_url": imgUrl,
-      "img_width": "200",
-      "img_height": "200",
-      "link": lineLink,
-      "desc": descContent,
-      "title": shareTitle
-    }, function(res) {
-      //_report('send_msg', res.err_msg);
-    })
-  });
-  // 分享到朋友圈
-  WeixinJSBridge.on('menu:share:timeline', function(argv){
-    WeixinJSBridge.invoke('shareTimeline',{
-      "img_url": imgUrl,
-      "img_width": "200",
-      "img_height": "200",
-      "link": lineLink,
-      "desc": descContent,
-      "title": shareTitle
-    }, function(res) {
-      //_report('timeline', res.err_msg);
-    });
-  });
-  // 分享到微博
-  WeixinJSBridge.on('menu:share:weibo', function(argv){
-    WeixinJSBridge.invoke('shareWeibo',{
-      "content": descContent,
-      "url": lineLink,
-    }, function(res) {
-      //_report('weibo', res.err_msg);
-    });
-  });
-}, false);
+!function(e){"use strict";var i={version:4};e.WeixinApi=i,"function"==typeof define&&(define.amd||define.cmd)&&(define.amd?define(function(){return i}):define.cmd&&define(function(require,exports,e){e.exports=i}));var n=function(){for(var e,i,n={},a=0,t=arguments.length;t>a;a++)if(e=arguments[a],"object"==typeof e)for(i in e)e[i]&&(n[i]=e[i]);return n},a=function(e,a,t){t=t||{};var r=function(e){switch(!0){case/\:cancel$/i.test(e.err_msg):t.cancel&&t.cancel(e);break;case/\:(confirm|ok)$/i.test(e.err_msg):t.confirm&&t.confirm(e);break;case/\:fail$/i.test(e.err_msg):default:t.fail&&t.fail(e)}t.all&&t.all(e)},o=function(i,n){if("menu:share:timeline"==e.menu||"general:share"==e.menu&&"timeline"==n.shareTo){var a=i.title;i.title=i.desc||a,i.desc=a||i.desc}if("general:share"===e.menu){if(("favorite"==n.shareTo||"favorite"==n.scene)&&t.favorite===!1)return n.generalShare(i,function(){});"timeline"===n.shareTo?WeixinJSBridge.invoke("shareTimeline",i,r):"friend"===n.shareTo?WeixinJSBridge.invoke("sendAppMessage",i,r):"QQ"===n.shareTo&&WeixinJSBridge.invoke("shareQQ",i,r)}else WeixinJSBridge.invoke(e.action,i,r)};WeixinJSBridge.on(e.menu,function(e){if(t.dataLoaded=t.dataLoaded||new Function,t.async&&t.ready)i._wx_loadedCb_=t.dataLoaded,i._wx_loadedCb_.toString().indexOf("_wx_loadedCb_")>0&&(i._wx_loadedCb_=new Function),t.dataLoaded=function(r){t.__cbkCalled=!0;var s=n(a,r);s.img_url=s.imgUrl||s.img_url,delete s.imgUrl,i._wx_loadedCb_(s),o(s,e)},(!e||"favorite"!=e.shareTo&&"favorite"!=e.scene||t.favorite!==!1)&&(t.ready&&t.ready(e,a),t.__cbkCalled||(t.dataLoaded({}),t.__cbkCalled=!1));else{var r=n(a);(!e||"favorite"!=e.shareTo&&"favorite"!=e.scene||t.favorite!==!1)&&t.ready&&t.ready(e,r),o(r,e)}})};i.shareToTimeline=function(e,i){a({menu:"menu:share:timeline",action:"shareTimeline"},{appid:e.appId?e.appId:"",img_url:e.imgUrl,link:e.link,desc:e.desc,title:e.title,img_width:"640",img_height:"640"},i)},i.shareToFriend=function(e,i){a({menu:"menu:share:appmessage",action:"sendAppMessage"},{appid:e.appId?e.appId:"",img_url:e.imgUrl,link:e.link,desc:e.desc,title:e.title,img_width:"640",img_height:"640"},i)},i.shareToWeibo=function(e,i){a({menu:"menu:share:weibo",action:"shareWeibo"},{content:e.desc,url:e.link},i)},i.generalShare=function(e,i){a({menu:"general:share"},{appid:e.appId?e.appId:"",img_url:e.imgUrl,link:e.link,desc:e.desc,title:e.title,img_width:"640",img_height:"640"},i)},i.addContact=function(e,i){i=i||{},WeixinJSBridge.invoke("addContact",{webtype:"1",username:e},function(e){var n=!e.err_msg||"add_contact:ok"==e.err_msg||"add_contact:added"==e.err_msg;n?i.success&&i.success(e):i.fail&&i.fail(e)})},i.imagePreview=function(e,i){e&&i&&0!=i.length&&WeixinJSBridge.invoke("imagePreview",{current:e,urls:i})},i.showOptionMenu=function(){WeixinJSBridge.call("showOptionMenu")},i.hideOptionMenu=function(){WeixinJSBridge.call("hideOptionMenu")},i.showToolbar=function(){WeixinJSBridge.call("showToolbar")},i.hideToolbar=function(){WeixinJSBridge.call("hideToolbar")},i.getNetworkType=function(e){e&&"function"==typeof e&&WeixinJSBridge.invoke("getNetworkType",{},function(i){e(i.err_msg)})},i.closeWindow=function(e){e=e||{},WeixinJSBridge.invoke("closeWindow",{},function(i){switch(i.err_msg){case"close_window:ok":e.success&&e.success(i);break;default:e.fail&&e.fail(i)}})},i.ready=function(i){var n=function(){var e={};Object.keys(WeixinJSBridge).forEach(function(i){e[i]=WeixinJSBridge[i]}),Object.keys(WeixinJSBridge).forEach(function(i){"function"==typeof WeixinJSBridge[i]&&(WeixinJSBridge[i]=function(){try{var n=arguments.length>0?arguments[0]:{},a=n.__params?n.__params.__runOn3rd_apis||[]:[];["menu:share:timeline","menu:share:appmessage","menu:share:qq","general:share"].forEach(function(e){-1===a.indexOf(e)&&a.push(e)})}catch(t){}return e[i].apply(WeixinJSBridge,arguments)})})};if(i&&"function"==typeof i){var a=this,t=function(){n(),i(a)};"undefined"==typeof e.WeixinJSBridge?document.addEventListener?document.addEventListener("WeixinJSBridgeReady",t,!1):document.attachEvent&&(document.attachEvent("WeixinJSBridgeReady",t),document.attachEvent("onWeixinJSBridgeReady",t)):t()}},i.openInWeixin=function(){return/MicroMessenger/i.test(navigator.userAgent)},i.scanQRCode=function(e){e=e||{},WeixinJSBridge.invoke("scanQRCode",{needResult:e.needResult?1:0,desc:e.desc||"WeixinApi Desc"},function(i){switch(i.err_msg){case"scanQRCode:ok":case"scan_qrcode:ok":e.success&&e.success(i);break;default:e.fail&&e.fail(i)}})},i.getInstallState=function(e,i){i=i||{},WeixinJSBridge.invoke("getInstallState",{packageUrl:e.packageUrl||"",packageName:e.packageName||""},function(e){var n=e.err_msg,a=n.match(/state:yes_?(.*)$/);a?(e.version=a[1]||"",i.success&&i.success(e)):i.fail&&i.fail(e),i.all&&i.all(e)})},i.sendEmail=function(e,i){i=i||{},WeixinJSBridge.invoke("sendEmail",{title:e.subject,content:e.body},function(e){"send_email:sent"===e.err_msg?i.success&&i.success(e):i.fail&&i.fail(e),i.all&&i.all(e)})},i.enableDebugMode=function(i){e.onerror=function(e,n,a,t){if("function"==typeof i)i({message:e,script:n,line:a,column:t});else{var r=[];r.push("\u989d\uff0c\u4ee3\u7801\u6709\u9519\u3002\u3002\u3002"),r.push("\n\u9519\u8bef\u4fe1\u606f\uff1a",e),r.push("\n\u51fa\u9519\u6587\u4ef6\uff1a",n),r.push("\n\u51fa\u9519\u4f4d\u7f6e\uff1a",a+"\u884c\uff0c"+t+"\u5217"),alert(r.join(""))}}}}(window);
+</script>
+<script>
+WeixinApi.ready(function(Api) {
+  var wxData = {
+    "appId": "",
+    "imgUrl" : '{{img}}',
+    "link" : location.href,
+    {% if notfound %}
+    "desc" : '真的没有找到人脸...',
+    {% else %}
+    "desc" : '真的是太惊讶了，我看起来像{{age}}岁，最像的明星是{{star.name}}',
+    {% endif %}
+    "title" : "这是个看脸的世界"
+  };
+  var wxCallbacks = {favorite : false};
+  Api.shareToFriend(wxData, wxCallbacks);
+  Api.shareToTimeline(wxData, wxCallbacks);
+  Api.shareToWeibo(wxData, wxCallbacks);
+  Api.generalShare(wxData, wxCallbacks);
+});
 </script>
 </body>
 </html>

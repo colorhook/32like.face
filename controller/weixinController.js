@@ -228,6 +228,7 @@ exports.show = function(req, res){
           }
           return res.render('show.html', {
             img: d.img,
+            notfound: true,
             info: info
           });
         }
@@ -237,6 +238,8 @@ exports.show = function(req, res){
       var info = exports.getScoreFromFace(data);
       return res.render('show.html', {
         img: data.img,
+        star: data.star,
+        age: data.data.age,
         info: info,
         type: data.type
       });
