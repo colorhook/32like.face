@@ -1,15 +1,15 @@
 李晨 http://photocdn.sohu.com/20091010/Img267253495.jpg
-李易峰 http://imgsrc.baidu.com/baike/abpic/item/48540923dd54564e027dc189b0de9c82d1584f61.jpg
+李易峰 http://gb.cri.cn/mmsource/images/2014/01/03/4/11328616966747743984.jpg
 郑恺 http://i1.sinaimg.cn/ent/2012/1204/U5204P28DT20121204163108.jpg
-鹿晗 http://imgsrc.baidu.com/baike/abpic/item/c75c10385343fbf216fc2f53b37eca8064388fea.jpg
+鹿晗 http://ww1.sinaimg.cn/mw600/64ce5cb9jw1dun5zgxsmbj.jpg
 古巨基 http://imgnews.mingxing.com/upload/picture/2013/11/8Egtn0z.png
-邓超 http://imgsrc.baidu.com/baike/abpic/item/35a85edf8db1cb13a492a613de54564e92584b33.jpg
+邓超 http://www.fjsen.com/images/attachement/jpg/site1/2011-10-17/2696752561597663513.jpg
 赵本山 http://img3.yxlady.com/uploads/intro/20120731/1415420.jpg
 吴亦凡 http://gb.cri.cn/mmsource/images/2014/11/02/12/7969618290046419988.jpg
 李钟硕 http://lady.shangdu.com/d/file/entertainment/gossip/mingxingbagua/2014-02-19/ffea73285bb0b06e75f22fbcf9bbf049.jpg
 黄晓明 http://photocdn.sohu.com/20120101/Img330941921.jpg
 钟汉良 http://i02.cztv.com/2012/11/1354238581_65411800.jpg
-王祖蓝 http://pic5.nipic.com/20091230/2076205_194452099719_2.jpg
+王祖蓝 http://pic.baike.soso.com/p/20120904/20120904172701-1121741152.jpg
 郭德纲 http://pic.newssc.org/0/12/11/47/12114774_500682.jpg
 彭于晏 http://cdn4.hbimg.cn/store/snsthumbs/280_280/celebrity/201213/817BDBB8E4AD9BB080F5CBC44CA885FECA852AF5FB.png
 周杰伦 http://i2.sinaimg.cn/ent/2011/0420/U4350P28DT20110420085938.jpg
@@ -33,9 +33,9 @@
 吴京 http://data.yule.sohu.com/star/pic/star/1/1513/default.jpg
 张丰毅 http://img.bendibao.com/beijing/201211/21/20121121171225149.JPG
 谢霆锋 http://ent.shangdu.com/2010/gt/20100926/P_56018_0__1374450080.jpg
-x 张国荣 http://a3.att.hudong.com/32/68/19300500337403133600687141385_950.jpg
-x 吴奇隆 http://images.china.cn/attachement/jpg/site1000/20130412/001fd04cebbc12d1ef4d5d.jpg
-x 林志颖 http://news.xinhuanet.com/ent/2013-07/07/124969371_11n.jpg
+张国荣 http://img.faxingsj.com/mxtp/00490910475.jpg
+吴奇隆 http://i2.sinaimg.cn/ent/v/p/2011-09-01/U5913P28T3D3405130F346DT20110901191054.JPG
+林志颖 http://www.hnr.cn/health/jsyd/201306/W020130605327001573612.jpg
 古天乐 http://i4.hunantv.com/p1/20111212/094144507.jpg
 王力宏 http://img1.27.cn/images/201110/24/1319428511_26972200.jpg
 韩庚 http://sh.sinaimg.cn/2013/0618/U3487P18DT20130618121527.jpg
@@ -64,7 +64,7 @@ x 林志颖 http://news.xinhuanet.com/ent/2013-07/07/124969371_11n.jpg
 元华 http://i4.hunantv.com/p1/20130408/1413084677.jpg
 唐国强 http://img2.cache.netease.com/ent/2014/10/20/20141020093557af7b5_550.jpg
 郭冬临 http://epaper.yangtse.com/images/2009-11/06/1257438723875YZA26b06C001_b.jpg
-黄日华 http://pic4.nipic.com/20090811/1275046_150527099_2.jpg
+黄日华 http://www.ruifilm.cn/Public/Uploads/4d34f3e350cc2.jpg
 孙兴 http://mingxingchina.com/upload/mximg/2010-08/1283150655hCCb.jpg
 任泉 http://img4.cache.netease.com/ent/2011/4/13/20110413101650fa198.jpg
 甄子丹 http://image.xinmin.cn/2013/05/19/20130519084242702531.jpg
@@ -78,4 +78,35 @@ x 林志颖 http://news.xinhuanet.com/ent/2013-07/07/124969371_11n.jpg
 罗家英 http://pic.baike.soso.com/p/20111008/bki-20111008210735-1435693055.jpg
 王刚 http://i2.sinaimg.cn/ent/v/p/2011-02-14/U3461P28T3D3229934F346DT20110214183401.JPG
 陈浩民 http://ent.people.com.cn/mediafile/200804/25/F200804251508062114715443.jpg
+--------
+孙俪 http://pic4.bbzhi.com/mingxingbizhi/sunligaoqingmeinvbizhixiazai/sunligaoqingmeinvbizhixiazai_351431_3.jpg
+angelababy http://phillabuster.org/ImgData/2013/1/3b3cc99c2052488e98698112fe8c632e.jpg
+范冰冰 http://gb.cri.cn/mmsource/images/2007/07/30/el070730603.jpg
+唐嫣 http://ww4.sinaimg.cn/mw600/6684e5f5gw1e2jcllfh6oj.jpg
+林志玲 http://image.cnwest.com/attachement/jpg/site1/20130506/14feb5e5d26812f1464b47.jpg
+刘诗诗 http://i1.hunantv.com/p1/20120707/1032402901.jpg
+周迅 http://image.qtv.com.cn/0/10/21/05/10210566_949754.jpg
+高圆圆 http://img1.cache.netease.com/catchpic/B/BB/BB790DE00D360C60EF3A35327E2E5D0E.jpg
+陈妍希 http://i2.sinaimg.cn/ent/2012/1014/U7393P28DT20121014015926.jpg
+刘亦菲 http://www.xpswh.com/UploadFile/PicTure/20105210161611003.jpg
+张馨予 http://www.feichanghaoyun.com/uploadfile/2013/0831/20130831084355235.jpg
+汤唯 http://pic4.nipic.com/20090905/1951702_061911062520_2.jpg
+章子怡 http://img04.tooopen.com/images/20120825/tooopen_201208251807495008.jpg
+周冬雨 http://news.xinhuanet.com/photo/2013-06/26/11118124914803_21d.jpg
+陈绮贞 http://img00.hc360.com/audio/201209/201209131128103358.jpg
+陈乔恩 http://photocdn.sohu.com/20130219/Img366467067.jpg
+赵丽颖 http://img00.hc360.com/shoes/201305/201305211142043074.jpg
+赵薇 http://images.takungpao.com/2013/0702/20130702093514984.jpg
+王菲 http://www.sd.xinhuanet.com/news/2014-01/03/118811915_51n.jpg
+李宇春 http://picm.bbzhi.com/mingxingbizhi/liyuchun/star_starcn_146069_m.jpg
+李宇春 http://picm.bbzhi.com/qitabizhi/liyuchunzhuomianbizhi/liyuchunzhuomianbizhi_481326_m.jpg
+李宇春 http://www.bundpic.com/upload/images/42/cf4ab03e397a05093c13b4517df4eaaf.jpg
+李宇春 http://gd.people.com.cn/mediafile/201007/28/F201007281817058846102456.jpg
+李冰冰 http://photocdn.sohu.com/20080201/Img255020583.jpg
+张歆艺 http://www.cecet.cn/upimg/allimg/110419/11U1161136.jpg
+王祖贤 http://www.sx.xinhuanet.com/rdsp/2009-07/08/xin_133070608104339016363.jpg
+钟楚红 http://img1.cache.netease.com/catchpic/D/DD/DDEC537E078549D823E8F420F014A3F6.jpg
+李嘉欣 http://www.jxgdw.com/articleimage/2004-07-07/whmljxhblxgz03.jpg
+邱淑贞 http://photocdn.sohu.com/20130717/Img381839420.jpg
+林青霞 http://gb.cri.cn/mmsource/images/2012/07/02/87/7001293902130403927.jpg
 --------

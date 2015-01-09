@@ -69,7 +69,7 @@ exports.image = function(message, callback){
       title: '这是一个看脸的世界',
       description: '系统正在紧张地扫描你的脸孔，点开查看详情',
       picurl: img,
-      url: 'http://face.zmzp.cn/show/' + message.MsgId
+      url: 'http://www.hk1k.com/show/' + message.MsgId
     }
   ]);
   
@@ -205,7 +205,7 @@ exports.show = function(req, res){
   var msgid = decodeURIComponent(req.param('msgid') || req.params.msgid || '');
   if(!msgid){
     return res.render('show-error.html', {
-      img: 'http://face.zmzp.cn/img/qrcode.jpg',
+      img: 'http://www.hk1k.com/img/qrcode.jpg',
       error: '没有指定msgid'
     });
   }
@@ -214,7 +214,7 @@ exports.show = function(req, res){
       database.NoDetect.findByMsgId(msgid, function(e, d){
         if(e || !d){
           return res.render('show-error.html', {
-            img: 'http://face.zmzp.cn/img/qrcode.jpg',
+            img: 'http://www.hk1k.com/img/qrcode.jpg',
             error: 'msgid无效'
           });
         }else{
